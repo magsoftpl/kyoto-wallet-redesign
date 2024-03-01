@@ -8,7 +8,7 @@ export const AuthorizedLayout: FC<
   }
 > = ({ children, header, toolbar, footer }) => {
   return (
-    <div className="flex flex-col w-full min-h-screen">
+    <div className="relative flex flex-col w-full min-h-screen">
       <header className="w-full">{header}</header>
       <nav className="w-full sticky top-0">{toolbar}</nav>
       <main className="basis-full grow">{children}</main>

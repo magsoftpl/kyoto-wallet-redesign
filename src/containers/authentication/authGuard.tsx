@@ -1,6 +1,6 @@
 "use client";
 import React, { ReactNode, useEffect } from "react";
-import useAuthData from "./store/authData-slice";
+import useAuthData from "./store/authData.slice";
 import { useRouter } from "next/navigation";
 
 type SessionRestriction = "required" | "prohibited";

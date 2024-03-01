@@ -6,7 +6,7 @@ export const UnauthorizedLayout: FC<
   }
 > = ({ children, footer }) => {
   return (
-    <div className="flex flex-col w-full min-h-screen">
+    <div className="relative flex flex-col w-full min-h-screen">
       <main className="basis-full grow">{children}</main>
       <footer className="w-full">{footer}</footer>
       <div id="modal-root" />

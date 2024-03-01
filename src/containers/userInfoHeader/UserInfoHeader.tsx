@@ -2,9 +2,9 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRightFromBracket } from "@fortawesome/free-solid-svg-icons";
 
-import { KyotoLogo } from "@/components/controls/kyotoLogo/KyotoLogo";
+import { KyotoLogo } from "@/components/simple-controls/kyotoLogo/KyotoLogo";
 import { WalletTile } from "./components/WalletTile";
-import { Button } from "@/components/controls/button/button";
+import { Button } from "@/components/simple-controls/button/button";
 import { useNavigator } from "../navigation/useNavigator";
 import { useSession } from "../authentication/useSession";
 

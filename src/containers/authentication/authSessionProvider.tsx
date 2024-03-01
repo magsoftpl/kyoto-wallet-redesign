@@ -1,7 +1,7 @@
 "use client";
 import { ReactNode, useEffect, useState } from "react";
 import { loadStoredSession } from "./logic/session";
-import { AppLoadingInfo } from "@/components/layouts/AppLoadingInfo";
+import { AppLoadingInfo } from "@/components/complex-controls/AppLoadingInfo";
 import { logError } from "../maintenanceLogs/maintenanceLog";
 
 export const AuthSessionProvider = ({ children }: { children: ReactNode }) => {

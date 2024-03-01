@@ -1,5 +1,5 @@
-import { Button } from "@/components/controls/button/button";
-import { KyotoLogo } from "@/components/controls/kyotoLogo/KyotoLogo";
+import { Button } from "@/components/simple-controls/button/button";
+import { KyotoLogo } from "@/components/simple-controls/kyotoLogo/KyotoLogo";
 import Image from "next/image";
 
 interface LoginTopProps {

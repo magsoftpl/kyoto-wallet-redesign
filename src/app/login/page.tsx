@@ -1,6 +1,6 @@
 import { AuthGuard } from "@/containers/authentication/authGuard";
 import { Footer } from "@/containers/footer/Footer";
-import { Login } from "@/containers/login/Login";
+import { Login } from "@/containers/loginAndRegistration/Login";
 import { UnauthorizedLayout } from "@/layouts/unauthorized/UnauthorizedLayout";
 
 const LoginPage = () => {

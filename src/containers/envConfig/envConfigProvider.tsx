@@ -2,7 +2,7 @@
 import { ReactNode, useEffect, useState } from "react";
 import { setEnvConfig } from "./envConfig";
 import { getApiClient } from "@/containers/authentication/authClient";
-import { AppLoadingInfo } from "@/components/layouts/AppLoadingInfo";
+import { AppLoadingInfo } from "@/components/complex-controls/AppLoadingInfo";
 import { logError } from "../maintenanceLogs/maintenanceLog";
 
 export const EnvConfigProvider = ({ children }: { children: ReactNode }) => {

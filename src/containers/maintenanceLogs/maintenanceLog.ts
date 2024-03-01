@@ -3,6 +3,7 @@ const MAINTENANCE_LOGS: unknown[] = [];
 (global as any).maintenanceLogs = MAINTENANCE_LOGS;
 
 export const logError = (text: string, payload: unknown) => {
+  // eslint-disable-next-line no-console
   console.error(payload);
   store("error", text, payload);
 };

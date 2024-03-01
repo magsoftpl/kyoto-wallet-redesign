@@ -2,7 +2,7 @@ import { obtainNewTokens } from "./token";
 import { getApiClient } from "../authClient";
 import { SessionDataResponse, UserProfileResponse } from "@/types/api.type";
 import { resetAllStores } from "@/utils/zustand/storeUtils";
-import useAuthData from "../store/authData-slice";
+import useAuthData from "../store/authData.slice";
 import { handleOperationError } from "@/containers/errorHandling/errorHandlingActions";
 
 export const setSessionData = (
@@ -54,16 +54,17 @@ export const deleteSession = async (navigate?: () => void) => {
   }
 };
 
-export const startSession = async (navigate: () => void) => {
+export const startSession = async (
+  accessToken: string,
+  refreshToken: string,
+  navigate: () => void
+) => {
   try {
     const apiClient = await getApiClient.withoutAuth();
-    const sessionResponse = await apiClient.post<SessionDataResponse>(
-      "session"
-    );
     // setCurrentUser(null);
     setSessionData({
-      accessToken: sessionResponse.data.access_token,
-      refreshToken: sessionResponse.data.refresh_token,
+      accessToken,
+      refreshToken,
     });
     navigate();
   } catch (err) {
