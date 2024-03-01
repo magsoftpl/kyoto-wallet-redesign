@@ -15,12 +15,17 @@ export const LoginWizard = () => {
     goToLoginMethod,
     changeForgotPasswordMode,
     loginWithEmailPassword,
+    loginWithWallet,
     sendPasswordResetRequest,
   } = useLoginWizardLogic();
   const navigator = useNavigator();
 
   const handleLoginWithEmailPassword = (email: string, password: string) => {
     loginWithEmailPassword(email, password, () => navigator("dashboard"));
+  };
+
+  const handleLoginWithWallet = () => {
+    loginWithWallet(() => navigator("dashboard"));
   };
 
   return (
@@ -33,8 +38,10 @@ export const LoginWizard = () => {
       )}
       {loginWizard?.kind === "wallet" && (
         <ModalLoginWizardWallet
+          provider={loginWizard.provider}
           onClose={hideLoginWizard}
           onBack={goToLoginMethod}
+          onLoginWithWallet={handleLoginWithWallet}
         />
       )}
       {loginWizard?.kind === "email" && (

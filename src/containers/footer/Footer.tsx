@@ -36,17 +36,6 @@ export const Footer = () => {
         <a
           href="#"
           className="rounded-md bg-primary p-2"
-          title="Settings"
-          target="_blank"
-          rel="noopener"
-        >
-          <div className="text-white w-5 h-5 flex items-center">
-            <SettingsSvg />
-          </div>
-        </a>
-        <a
-          href="#"
-          className="rounded-md bg-primary p-2"
           title="Ask away"
           target="_blank"
           rel="noopener"

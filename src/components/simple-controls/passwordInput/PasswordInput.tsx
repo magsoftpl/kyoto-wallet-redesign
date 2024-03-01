@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import { Input } from "../input/Input";
-import { Button } from "../button/button";
+import { Button } from "../button/Button";
 
 type PasswordInputProps = Omit<Parameters<typeof Input>[0], "type">;
 

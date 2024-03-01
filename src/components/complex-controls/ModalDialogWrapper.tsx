@@ -1,5 +1,5 @@
 import React, { ReactNode } from "react";
-import { Button } from "../simple-controls/button/button";
+import { Button } from "../simple-controls/button/Button";
 import classNames from "classnames";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faX, faArrowLeft } from "@fortawesome/free-solid-svg-icons";

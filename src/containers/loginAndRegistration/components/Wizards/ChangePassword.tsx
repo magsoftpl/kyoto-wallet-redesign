@@ -1,5 +1,5 @@
 import * as Yup from "yup";
-import { Button } from "@/components/simple-controls/button/button";
+import { Button } from "@/components/simple-controls/button/Button";
 import { Form, Formik } from "formik";
 import { getDisplayedError } from "@/utils/formik/getDisplayedError";
 import { PasswordInput } from "@/components/simple-controls/passwordInput/PasswordInput";

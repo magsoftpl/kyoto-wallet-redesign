@@ -1,12 +1,16 @@
 import { ConnectWalletStepsTracker } from "./ConnectWalletStepsTracker";
 
-export const ConnectWallet = () => {
+interface ConnectWalletProps {
+  isProcessing: boolean;
+}
+
+export const ConnectWallet = ({ isProcessing }: ConnectWalletProps) => {
   return (
     <div>
       <ConnectWalletStepsTracker
         steps={[
           {
-            status: "current",
+            status: isProcessing ? "in-processing" : "current",
             description: (
               <div>
                 <div className="font-semibold">Connect Wallet</div>

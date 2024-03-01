@@ -3,9 +3,10 @@ import { ConnectWalletStepsTracker } from "./ConnectWalletStepsTracker";
 
 interface VerifyWalletProps {
   address: string;
+  isProcessing: boolean;
 }
 
-export const VerifyWallet = ({ address }: VerifyWalletProps) => {
+export const VerifyWallet = ({ address, isProcessing }: VerifyWalletProps) => {
   return (
     <div>
       <ConnectWalletStepsTracker
@@ -24,7 +25,7 @@ export const VerifyWallet = ({ address }: VerifyWalletProps) => {
             ),
           },
           {
-            status: "in-processing",
+            status: isProcessing ? "in-processing" : "current",
             description: (
               <div>
                 <div className="font-semibold">Verify address</div>

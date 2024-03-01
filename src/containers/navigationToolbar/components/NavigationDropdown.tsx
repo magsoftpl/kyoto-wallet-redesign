@@ -1,6 +1,6 @@
 import Link from "next/link";
 import classNames from "classnames";
-import { Button } from "@/components/simple-controls/button/button";
+import { Button } from "@/components/simple-controls/button/Button";
 import { useState } from "react";
 
 export const NavigationDropdown = ({

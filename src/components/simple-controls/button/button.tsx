@@ -24,7 +24,7 @@ export const Button = ({
 }: ButtonProps) => {
   const layoutClasses: Record<ButtonLayout, string> = {
     default: "py-2 px-10 rounded-full",
-    "icon-only": "p-2 rounded-full",
+    "icon-only": "p-2 rounded-full shrink-0 grow-0",
   };
   const variantClasses: Record<ButtonVariant, string> = {
     primary: "bg-primary-400 text-secondary-950",

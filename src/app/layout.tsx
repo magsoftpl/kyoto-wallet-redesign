@@ -3,6 +3,8 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { EnvConfigProvider } from "@/containers/envConfig/envConfigProvider";
 import { AuthSessionProvider } from "@/containers/authentication/authSessionProvider";
+import { Web3Provider } from "@/containers/web3/Web3Provider";
+import { appDescription } from "@/utils/constants";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -10,10 +12,7 @@ const inter = Inter({
   adjustFontFallback: false,
 });
 
-export const metadata: Metadata = {
-  title: "Kyoto Wallet",
-  description: "Kyoto wallet",
-};
+export const metadata: Metadata = appDescription;
 
 export default function RootLayout({
   children,
@@ -30,7 +29,9 @@ export default function RootLayout({
       </head>
       <body className={inter.className}>
         <EnvConfigProvider>
-          <AuthSessionProvider>{children}</AuthSessionProvider>
+          <Web3Provider>
+            <AuthSessionProvider>{children}</AuthSessionProvider>
+          </Web3Provider>
         </EnvConfigProvider>
       </body>
     </html>

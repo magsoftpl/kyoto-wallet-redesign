@@ -11,7 +11,7 @@ export const formatAddress = (
     return null;
   }
   const firstPart = address.slice(0, startChars);
-  const secondPart = address.slice(-endChars);
+  const secondPart = endChars > 0 ? address.slice(-endChars) : "";
   return `${firstPart}${!!firstPart ? ".." : ""}${
     !!secondPart ? ".." : ""
   }${secondPart}`;

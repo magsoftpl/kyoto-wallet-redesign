@@ -1,6 +1,6 @@
 import * as Yup from "yup";
 import { Input } from "@/components/simple-controls/input/Input";
-import { Button } from "@/components/simple-controls/button/button";
+import { Button } from "@/components/simple-controls/button/Button";
 import { Form, Formik, FormikProps } from "formik";
 import { PasswordInput } from "@/components/simple-controls/passwordInput/PasswordInput";
 import { useEffect, useRef } from "react";

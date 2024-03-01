@@ -1,4 +1,4 @@
-import { Button } from "@/components/simple-controls/button/button";
+import { Button } from "@/components/simple-controls/button/Button";
 import { KyotoLogo } from "@/components/simple-controls/kyotoLogo/KyotoLogo";
 import Image from "next/image";
 

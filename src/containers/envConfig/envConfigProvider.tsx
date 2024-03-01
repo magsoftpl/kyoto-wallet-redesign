@@ -16,8 +16,8 @@ export const EnvConfigProvider = ({ children }: { children: ReactNode }) => {
         const configResponse = await apiClient.get<{
           config: Record<string, string>;
         }>("/config");
-        setLoadingState("loaded");
         setEnvConfig(configResponse.data.config);
+        setLoadingState("loaded");
       } catch (err) {
         logError("Error loading environment config", err);
         setLoadingState("error");

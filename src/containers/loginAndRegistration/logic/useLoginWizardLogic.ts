@@ -104,6 +104,24 @@ export const useLoginWizardLogic = () => {
     [loginWizard, setLoginWizard, startSession]
   );
 
+  const loginWithWallet = useCallback(
+    async (navigate: () => void) => {
+      try {
+        const client = await getApiClient.withoutAuth();
+        const loginResponse = await client.post<SessionDataResponse>("wallet");
+        await startSession(
+          loginResponse.data.access_token,
+          loginResponse.data.refresh_token,
+          navigate
+        );
+        setLoginWizard(null);
+      } catch (err) {
+        handleOperationError("Error during login operation", err);
+      }
+    },
+    [setLoginWizard, startSession]
+  );
+
   const sendPasswordResetRequest = useCallback(
     async (email: string) => {
       try {
@@ -175,6 +193,7 @@ export const useLoginWizardLogic = () => {
       goToLoginMethod,
       changeForgotPasswordMode,
       loginWithEmailPassword,
+      loginWithWallet,
       sendPasswordResetRequest,
       showResetPasswordWizard,
       resetPassword,
@@ -186,6 +205,7 @@ export const useLoginWizardLogic = () => {
       goToLoginMethod,
       changeForgotPasswordMode,
       loginWithEmailPassword,
+      loginWithWallet,
       sendPasswordResetRequest,
       showResetPasswordWizard,
       resetPassword,
