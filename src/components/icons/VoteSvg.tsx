@@ -6,5 +6,5 @@ export const VoteSvg = () => {
         fill="currentColor"
       />
     </svg>
-  );
-};
+  )
+}

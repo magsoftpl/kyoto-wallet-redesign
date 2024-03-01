@@ -1,14 +1,11 @@
-import classNames from "classnames";
+import classNames from 'classnames'
 
 export interface LoaderProps {
-  theme: "light" | "dark";
+  theme: 'light' | 'dark'
 }
 
 export const Loader = ({ theme }: LoaderProps) => {
-  const mainClass = classNames(
-    "relative h-12 w-12",
-    theme === "light" ? "text-white" : "text-secondary-950"
-  );
+  const mainClass = classNames('relative h-12 w-12', theme === 'light' ? 'text-white' : 'text-secondary-950')
   return (
     <div className={mainClass}>
       <svg
@@ -25,5 +22,5 @@ export const Loader = ({ theme }: LoaderProps) => {
         />
       </svg>
     </div>
-  );
-};
+  )
+}

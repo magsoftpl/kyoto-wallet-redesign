@@ -1,10 +1,10 @@
-import { FC, PropsWithChildren, ReactElement } from "react";
+import { FC, PropsWithChildren, ReactElement } from 'react'
 
 export const AuthorizedLayout: FC<
   PropsWithChildren & {
-    header: ReactElement;
-    toolbar: ReactElement;
-    footer: ReactElement;
+    header: ReactElement
+    toolbar: ReactElement
+    footer: ReactElement
   }
 > = ({ children, header, toolbar, footer }) => {
   return (
@@ -15,5 +15,5 @@ export const AuthorizedLayout: FC<
       <footer className="w-full">{footer}</footer>
       <div id="modal-root" />
     </div>
-  );
-};
+  )
+}

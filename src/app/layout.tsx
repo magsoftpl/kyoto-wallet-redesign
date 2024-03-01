@@ -1,23 +1,24 @@
-import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-import "./globals.css";
-import { EnvConfigProvider } from "@/containers/envConfig/envConfigProvider";
-import { AuthSessionProvider } from "@/containers/authentication/authSessionProvider";
-import { Web3Provider } from "@/containers/web3/Web3Provider";
-import { appDescription } from "@/utils/constants";
+import type { Metadata } from 'next'
+import { Inter } from 'next/font/google'
+import './globals.css'
+import { EnvConfigProvider } from '@/containers/envConfig/envConfigProvider'
+import { AuthSessionProvider } from '@/containers/authentication/authSessionProvider'
+import { Web3Provider } from '@/containers/web3/Web3Provider'
+import { appDescription } from '@/utils/constants'
+import { ReactNode } from 'react'
 
 const inter = Inter({
-  subsets: ["latin"],
-  variable: "--font-inter",
+  subsets: ['latin'],
+  variable: '--font-inter',
   adjustFontFallback: false,
-});
+})
 
-export const metadata: Metadata = appDescription;
+export const metadata: Metadata = appDescription
 
 export default function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode;
+  children: ReactNode
 }>) {
   return (
     <html lang="en">
@@ -35,5 +36,5 @@ export default function RootLayout({
         </EnvConfigProvider>
       </body>
     </html>
-  );
+  )
 }

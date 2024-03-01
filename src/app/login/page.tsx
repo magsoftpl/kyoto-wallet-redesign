@@ -1,7 +1,7 @@
-import { AuthGuard } from "@/containers/authentication/authGuard";
-import { Footer } from "@/containers/footer/Footer";
-import { Login } from "@/containers/loginAndRegistration/Login";
-import { UnauthorizedLayout } from "@/layouts/unauthorized/UnauthorizedLayout";
+import { AuthGuard } from '@/containers/authentication/authGuard'
+import { Footer } from '@/containers/footer/Footer'
+import { Login } from '@/containers/loginAndRegistration/Login'
+import { UnauthorizedLayout } from '@/layouts/unauthorized/UnauthorizedLayout'
 
 const LoginPage = () => {
   return (
@@ -10,7 +10,7 @@ const LoginPage = () => {
         <Login />
       </UnauthorizedLayout>
     </AuthGuard>
-  );
-};
+  )
+}
 
-export default LoginPage;
+export default LoginPage

@@ -19,5 +19,5 @@ export const ChatSvg = () => {
         fill="currentColor"
       />
     </svg>
-  );
-};
+  )
+}

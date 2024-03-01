@@ -1,12 +1,12 @@
-"use client";
+'use client'
 
-import useLoginStateData from "./store/loginData.slice";
-import { useLoginWizardLogic } from "./logic/useLoginWizardLogic";
-import { ModalResetPassword } from "./components/Wizards/ModalResetPassword";
+import useLoginStateData from './store/loginData.slice'
+import { useLoginWizardLogic } from './logic/useLoginWizardLogic'
+import { ModalResetPassword } from './components/Wizards/ModalResetPassword'
 
 export const ResetPasswordWizard = () => {
-  const { resetPasswordWizard } = useLoginStateData();
-  const { showLoginWizard, resetPassword } = useLoginWizardLogic();
+  const { resetPasswordWizard } = useLoginStateData()
+  const { showLoginWizard, resetPassword } = useLoginWizardLogic()
   return (
     <>
       {resetPasswordWizard && (
@@ -17,5 +17,5 @@ export const ResetPasswordWizard = () => {
         />
       )}
     </>
-  );
-};
+  )
+}

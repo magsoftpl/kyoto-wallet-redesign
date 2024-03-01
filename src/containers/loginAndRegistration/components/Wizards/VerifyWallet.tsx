@@ -1,9 +1,9 @@
-import { AddressFormatter } from "@/components/formatters/AddressFormatter";
-import { ConnectWalletStepsTracker } from "./ConnectWalletStepsTracker";
+import { AddressFormatter } from '@/components/formatters/AddressFormatter'
+import { ConnectWalletStepsTracker } from './ConnectWalletStepsTracker'
 
 interface VerifyWalletProps {
-  address: string;
-  isProcessing: boolean;
+  address: string
+  isProcessing: boolean
 }
 
 export const VerifyWallet = ({ address, isProcessing }: VerifyWalletProps) => {
@@ -12,7 +12,7 @@ export const VerifyWallet = ({ address, isProcessing }: VerifyWalletProps) => {
       <ConnectWalletStepsTracker
         steps={[
           {
-            status: "completed",
+            status: 'completed',
             description: (
               <div>
                 <div className="font-semibold">Connected</div>
@@ -25,7 +25,7 @@ export const VerifyWallet = ({ address, isProcessing }: VerifyWalletProps) => {
             ),
           },
           {
-            status: isProcessing ? "in-processing" : "current",
+            status: isProcessing ? 'in-processing' : 'current',
             description: (
               <div>
                 <div className="font-semibold">Verify address</div>
@@ -36,5 +36,5 @@ export const VerifyWallet = ({ address, isProcessing }: VerifyWalletProps) => {
         ]}
       />
     </div>
-  );
-};
+  )
+}

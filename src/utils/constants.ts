@@ -1,4 +1,4 @@
 export const appDescription = {
-  title: "Kyoto Wallet",
-  description: "Kyoto wallet",
-};
+  title: 'Kyoto Wallet',
+  description: 'Kyoto wallet',
+}

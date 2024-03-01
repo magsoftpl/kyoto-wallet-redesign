@@ -1,16 +1,16 @@
-const MAINTENANCE_LOGS_LIMIT = 100;
-const MAINTENANCE_LOGS: unknown[] = [];
-(global as any).maintenanceLogs = MAINTENANCE_LOGS;
+const MAINTENANCE_LOGS_LIMIT = 100
+const MAINTENANCE_LOGS: unknown[] = []
+;(global as any).maintenanceLogs = MAINTENANCE_LOGS
 
 export const logError = (text: string, payload: unknown) => {
   // eslint-disable-next-line no-console
-  console.error(payload);
-  store("error", text, payload);
-};
+  console.error(payload)
+  store('error', text, payload)
+}
 
 export const logInfo = (text: string, payload: unknown) => {
-  store("info", text, payload);
-};
+  store('info', text, payload)
+}
 
 function store(analysis: string, text: string, payload: unknown) {
   MAINTENANCE_LOGS.unshift({
@@ -18,6 +18,6 @@ function store(analysis: string, text: string, payload: unknown) {
     text,
     payload,
     timestamp: new Date(),
-  });
-  MAINTENANCE_LOGS.splice(MAINTENANCE_LOGS_LIMIT);
+  })
+  MAINTENANCE_LOGS.splice(MAINTENANCE_LOGS_LIMIT)
 }

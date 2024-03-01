@@ -1,189 +1,173 @@
-import { useCallback, useMemo } from "react";
-import { AxiosError } from "axios";
-import useLoginStateData, {
-  LoginWizardData,
-  WalletProvider,
-} from "../store/loginData.slice";
-import { getApiClient } from "@/containers/authentication/authClient";
-import { SessionDataResponse } from "@/types/api.type";
-import { useSession } from "@/containers/authentication/useSession";
-import { handleOperationError } from "@/containers/errorHandling/errorHandlingActions";
+import { useCallback, useMemo } from 'react'
+import { AxiosError } from 'axios'
+import useLoginStateData, { LoginWizardData, WalletProvider } from '../store/loginData.slice'
+import { getApiClient } from '@/containers/authentication/authClient'
+import { SessionDataResponse } from '@/types/api.type'
+import { useSession } from '@/containers/authentication/useSession'
+import { handleOperationError } from '@/containers/errorHandling/errorHandlingActions'
 
 export const useLoginWizardLogic = () => {
-  const {
-    loginWizard,
-    resetPasswordWizard,
-    setLoginWizard,
-    setResetPasswordWizard,
-  } = useLoginStateData();
-  const { startSession } = useSession();
+  const { loginWizard, resetPasswordWizard, setLoginWizard, setResetPasswordWizard } = useLoginStateData()
+  const { startSession } = useSession()
 
   const showLoginWizard = useCallback(() => {
-    setLoginWizard({ kind: "method-select" });
-    setResetPasswordWizard(null);
-  }, [setLoginWizard, setResetPasswordWizard]);
+    setLoginWizard({ kind: 'method-select' })
+    setResetPasswordWizard(null)
+  }, [setLoginWizard, setResetPasswordWizard])
 
   const hideLoginWizard = useCallback(() => {
-    setLoginWizard(null);
-  }, [setLoginWizard]);
+    setLoginWizard(null)
+  }, [setLoginWizard])
 
   const selectLoginMethod = useCallback(
     (
       payload:
-        | "email"
+        | 'email'
         | {
-            kind: "wallet";
-            provider: WalletProvider;
-          }
+            kind: 'wallet'
+            provider: WalletProvider
+          },
     ) => {
       const initialState: LoginWizardData =
-        payload === "email"
+        payload === 'email'
           ? {
-              kind: "email",
+              kind: 'email',
               isForgotPassword: false,
               isLoginError: false,
               resetPasswordEmailSent: false,
             }
           : {
-              kind: "wallet",
+              kind: 'wallet',
               provider: payload.provider,
-            };
-      setLoginWizard(initialState);
+            }
+      setLoginWizard(initialState)
     },
-    [setLoginWizard]
-  );
+    [setLoginWizard],
+  )
 
   const goToLoginMethod = useCallback(() => {
     setLoginWizard({
-      kind: "method-select",
-    });
-  }, [setLoginWizard]);
+      kind: 'method-select',
+    })
+  }, [setLoginWizard])
 
   const changeForgotPasswordMode = useCallback(
     (val: boolean) => {
-      if (loginWizard?.kind !== "email") {
-        return;
+      if (loginWizard?.kind !== 'email') {
+        return
       }
       setLoginWizard({
         ...loginWizard,
         isForgotPassword: val,
         resetPasswordEmailSent: false,
-      });
+      })
     },
-    [loginWizard, setLoginWizard]
-  );
+    [loginWizard, setLoginWizard],
+  )
 
   const loginWithEmailPassword = useCallback(
     async (email: string, password: string, navigate: () => void) => {
       try {
-        const client = await getApiClient.withoutAuth();
-        const loginResponse = await client.post<SessionDataResponse>("login", {
+        const client = await getApiClient.withoutAuth()
+        const loginResponse = await client.post<SessionDataResponse>('login', {
           email,
           password,
-        });
-        await startSession(
-          loginResponse.data.access_token,
-          loginResponse.data.refresh_token,
-          navigate
-        );
-        setLoginWizard(null);
+        })
+        await startSession(loginResponse.data.access_token, loginResponse.data.refresh_token, navigate)
+        setLoginWizard(null)
       } catch (err) {
         if (err instanceof AxiosError && err.response?.status === 401) {
-          if (loginWizard?.kind !== "email") {
-            return;
+          if (loginWizard?.kind !== 'email') {
+            return
           }
           setLoginWizard({
             ...loginWizard,
             isLoginError: true,
-          });
-          return;
+          })
+          return
         }
-        handleOperationError("Error during login operation", err);
+        handleOperationError('Error during login operation', err)
       }
     },
-    [loginWizard, setLoginWizard, startSession]
-  );
+    [loginWizard, setLoginWizard, startSession],
+  )
 
   const loginWithWallet = useCallback(
     async (navigate: () => void) => {
       try {
-        const client = await getApiClient.withoutAuth();
-        const loginResponse = await client.post<SessionDataResponse>("wallet");
-        await startSession(
-          loginResponse.data.access_token,
-          loginResponse.data.refresh_token,
-          navigate
-        );
-        setLoginWizard(null);
+        const client = await getApiClient.withoutAuth()
+        const loginResponse = await client.post<SessionDataResponse>('wallet')
+        await startSession(loginResponse.data.access_token, loginResponse.data.refresh_token, navigate)
+        setLoginWizard(null)
       } catch (err) {
-        handleOperationError("Error during login operation", err);
+        handleOperationError('Error during login operation', err)
       }
     },
-    [setLoginWizard, startSession]
-  );
+    [setLoginWizard, startSession],
+  )
 
   const sendPasswordResetRequest = useCallback(
     async (email: string) => {
       try {
-        const client = await getApiClient.withoutAuth();
-        await client.post("password/resetpassword", {
+        const client = await getApiClient.withoutAuth()
+        await client.post('password/resetpassword', {
           email,
-        });
-        if (loginWizard?.kind !== "email") {
-          return;
+        })
+        if (loginWizard?.kind !== 'email') {
+          return
         }
         setLoginWizard({
           ...loginWizard,
           resetPasswordEmailSent: true,
-        });
+        })
       } catch (err) {
-        handleOperationError("Error when sending password reset link", err);
+        handleOperationError('Error when sending password reset link', err)
       }
     },
-    [loginWizard, setLoginWizard]
-  );
+    [loginWizard, setLoginWizard],
+  )
 
   const showResetPasswordWizard = useCallback(
     (token: string) => {
       setResetPasswordWizard({
         token,
         passwordResetStatus: null,
-      });
+      })
     },
-    [setResetPasswordWizard]
-  );
+    [setResetPasswordWizard],
+  )
 
   const resetPassword = useCallback(
     async (password: string) => {
       try {
         if (!resetPasswordWizard) {
-          return;
+          return
         }
-        const client = await getApiClient.withoutAuth();
-        await client.post("password/resetpassword/newpassword", {
+        const client = await getApiClient.withoutAuth()
+        await client.post('password/resetpassword/newpassword', {
           token: resetPasswordWizard.token,
           password,
-        });
+        })
         setResetPasswordWizard({
           ...resetPasswordWizard,
-          passwordResetStatus: "success",
-        });
+          passwordResetStatus: 'success',
+        })
       } catch (err) {
         if (err instanceof AxiosError && err.response?.status === 401) {
           if (!resetPasswordWizard) {
-            return;
+            return
           }
           setResetPasswordWizard({
             ...resetPasswordWizard,
-            passwordResetStatus: "error",
-          });
-          return;
+            passwordResetStatus: 'error',
+          })
+          return
         }
-        handleOperationError("Error when setting new password", err);
+        handleOperationError('Error when setting new password', err)
       }
     },
-    [resetPasswordWizard, setResetPasswordWizard]
-  );
+    [resetPasswordWizard, setResetPasswordWizard],
+  )
 
   const result = useMemo(
     () => ({
@@ -209,8 +193,8 @@ export const useLoginWizardLogic = () => {
       sendPasswordResetRequest,
       showResetPasswordWizard,
       resetPassword,
-    ]
-  );
+    ],
+  )
 
-  return result;
-};
+  return result
+}

@@ -1,14 +1,14 @@
-"use client";
+'use client'
 
-import { ModalLoginWizardMethodSelect } from "./components/Wizards/ModalLoginWizardMethodSelect";
-import { ModalLoginWizardWallet } from "./components/Wizards/ModalLoginWizardWallet";
-import { ModalLoginWizardEmailPassword } from "./components/Wizards/ModalLoginWizardEmailPassword";
-import useLoginStateData from "./store/loginData.slice";
-import { useLoginWizardLogic } from "./logic/useLoginWizardLogic";
-import { useNavigator } from "../navigation/useNavigator";
+import { ModalLoginWizardMethodSelect } from './components/Wizards/ModalLoginWizardMethodSelect'
+import { ModalLoginWizardWallet } from './components/Wizards/ModalLoginWizardWallet'
+import { ModalLoginWizardEmailPassword } from './components/Wizards/ModalLoginWizardEmailPassword'
+import useLoginStateData from './store/loginData.slice'
+import { useLoginWizardLogic } from './logic/useLoginWizardLogic'
+import { useNavigator } from '../navigation/useNavigator'
 
 export const LoginWizard = () => {
-  const { loginWizard } = useLoginStateData();
+  const { loginWizard } = useLoginStateData()
   const {
     hideLoginWizard,
     selectLoginMethod,
@@ -17,26 +17,23 @@ export const LoginWizard = () => {
     loginWithEmailPassword,
     loginWithWallet,
     sendPasswordResetRequest,
-  } = useLoginWizardLogic();
-  const navigator = useNavigator();
+  } = useLoginWizardLogic()
+  const navigator = useNavigator()
 
   const handleLoginWithEmailPassword = (email: string, password: string) => {
-    loginWithEmailPassword(email, password, () => navigator("dashboard"));
-  };
+    loginWithEmailPassword(email, password, () => navigator('dashboard'))
+  }
 
   const handleLoginWithWallet = () => {
-    loginWithWallet(() => navigator("dashboard"));
-  };
+    loginWithWallet(() => navigator('dashboard'))
+  }
 
   return (
     <>
-      {loginWizard?.kind === "method-select" && (
-        <ModalLoginWizardMethodSelect
-          onMethodSelect={selectLoginMethod}
-          onClose={hideLoginWizard}
-        />
+      {loginWizard?.kind === 'method-select' && (
+        <ModalLoginWizardMethodSelect onMethodSelect={selectLoginMethod} onClose={hideLoginWizard} />
       )}
-      {loginWizard?.kind === "wallet" && (
+      {loginWizard?.kind === 'wallet' && (
         <ModalLoginWizardWallet
           provider={loginWizard.provider}
           onClose={hideLoginWizard}
@@ -44,7 +41,7 @@ export const LoginWizard = () => {
           onLoginWithWallet={handleLoginWithWallet}
         />
       )}
-      {loginWizard?.kind === "email" && (
+      {loginWizard?.kind === 'email' && (
         <ModalLoginWizardEmailPassword
           isForgotPassword={loginWizard.isForgotPassword}
           isLoginError={loginWizard.isLoginError}
@@ -57,5 +54,5 @@ export const LoginWizard = () => {
         />
       )}
     </>
-  );
-};
+  )
+}

@@ -1,13 +1,13 @@
-import { useMemo } from "react";
-import { getEnvConfigValue } from "../envConfig/envConfig";
+import { useMemo } from 'react'
+import { getEnvConfigValue } from '../envConfig/envConfig'
 
 export const useNetworkConfig = () => {
-  const kyotoChainId = Number(getEnvConfigValue("KYOTO_CHAIN_ID"));
-  const kyotoRpc = getEnvConfigValue("KYOTO_RPC_URL");
-  const kyotoExplorerUrl = getEnvConfigValue("KYOTO_EXPLORER_URL");
-  const bscChainId = Number(getEnvConfigValue("BSC_CHAIN_ID"));
-  const bscRpc = getEnvConfigValue("BSC_RPC_URL");
-  const bscExplorerUrl = getEnvConfigValue("BSC_EXPLORER_URL");
+  const kyotoChainId = Number(getEnvConfigValue('KYOTO_CHAIN_ID'))
+  const kyotoRpc = getEnvConfigValue('KYOTO_RPC_URL')
+  const kyotoExplorerUrl = getEnvConfigValue('KYOTO_EXPLORER_URL')
+  const bscChainId = Number(getEnvConfigValue('BSC_CHAIN_ID'))
+  const bscRpc = getEnvConfigValue('BSC_RPC_URL')
+  const bscExplorerUrl = getEnvConfigValue('BSC_EXPLORER_URL')
 
   const result = useMemo(
     () => ({
@@ -22,15 +22,8 @@ export const useNetworkConfig = () => {
         explorerUrl: bscExplorerUrl,
       },
     }),
-    [
-      bscChainId,
-      bscExplorerUrl,
-      bscRpc,
-      kyotoChainId,
-      kyotoExplorerUrl,
-      kyotoRpc,
-    ]
-  );
+    [bscChainId, bscExplorerUrl, bscRpc, kyotoChainId, kyotoExplorerUrl, kyotoRpc],
+  )
 
-  return result;
-};
+  return result
+}

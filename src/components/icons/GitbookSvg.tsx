@@ -6,5 +6,5 @@ export const GitbookSvg = () => {
         fill="currentColor"
       />
     </svg>
-  );
-};
+  )
+}

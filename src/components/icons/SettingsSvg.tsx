@@ -6,5 +6,5 @@ export const SettingsSvg = () => {
         fill="currentColor"
       />
     </svg>
-  );
-};
+  )
+}

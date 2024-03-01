@@ -1,16 +1,16 @@
-import { AddressFormatter } from "@/components/formatters/AddressFormatter";
-import { useClipboard } from "@/components/hooks/useClipboard";
-import { Button } from "@/components/simple-controls/button/Button";
-import { KyotoLogoSvg } from "@/components/simple-controls/kyotoLogo/KyotoLogoSvg";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCopy } from "@fortawesome/free-solid-svg-icons";
+import { AddressFormatter } from '@/components/formatters/AddressFormatter'
+import { useClipboard } from '@/components/hooks/useClipboard'
+import { Button } from '@/components/simple-controls/button/Button'
+import { KyotoLogoSvg } from '@/components/simple-controls/kyotoLogo/KyotoLogoSvg'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faCopy } from '@fortawesome/free-solid-svg-icons'
 
 interface WalletTileProps {
-  address: string | null | undefined;
+  address: string | null | undefined
 }
 
 export const WalletTile = ({ address }: WalletTileProps) => {
-  const copy = useClipboard();
+  const copy = useClipboard()
 
   return (
     <div className="w-full max-w-[35rem] aspect-[7/4]">
@@ -29,12 +29,7 @@ export const WalletTile = ({ address }: WalletTileProps) => {
                   <AddressFormatter startChars={8} endChars={12}>
                     {address}
                   </AddressFormatter>
-                  <Button
-                    variant="transparent"
-                    layout="icon-only"
-                    aria-label="Copy"
-                    onClick={() => copy(address)}
-                  >
+                  <Button variant="transparent" layout="icon-only" aria-label="Copy" onClick={() => copy(address)}>
                     <FontAwesomeIcon icon={faCopy} />
                   </Button>
                 </div>
@@ -45,5 +40,5 @@ export const WalletTile = ({ address }: WalletTileProps) => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}

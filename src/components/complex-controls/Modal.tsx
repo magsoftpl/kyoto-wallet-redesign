@@ -1,17 +1,17 @@
-"use client";
-import React, { ReactNode, useEffect, useState } from "react";
-import { createPortal } from "react-dom";
-import { ModalDialogWrapper, ModalTheme } from "./ModalDialogWrapper";
+'use client'
+import React, { ReactNode, useEffect, useState } from 'react'
+import { createPortal } from 'react-dom'
+import { ModalDialogWrapper, ModalTheme } from './ModalDialogWrapper'
 
 interface ModalProps {
-  children: ReactNode;
-  title: ReactNode;
-  hasBackButton?: boolean;
-  hasCloseButton?: boolean;
-  show: boolean;
-  theme?: ModalTheme;
-  onBack?: () => void;
-  onClose?: () => void;
+  children: ReactNode
+  title: ReactNode
+  hasBackButton?: boolean
+  hasCloseButton?: boolean
+  show: boolean
+  theme?: ModalTheme
+  onBack?: () => void
+  onClose?: () => void
 }
 
 export const Modal: React.FC<ModalProps> = ({
@@ -40,14 +40,14 @@ export const Modal: React.FC<ModalProps> = ({
         </ModalDialogWrapper>
       </div>
     </>
-  ) : null;
+  ) : null
 
-  const [ref, setRef] = useState<Element | null>(null);
+  const [ref, setRef] = useState<Element | null>(null)
   useEffect(() => {
     if (!ref) {
-      const element = document.getElementById("modal-root");
-      setRef(element);
+      const element = document.getElementById('modal-root')
+      setRef(element)
     }
-  }, [ref]);
-  return show && ref ? createPortal(modalContent, ref) : null;
-};
+  }, [ref])
+  return show && ref ? createPortal(modalContent, ref) : null
+}

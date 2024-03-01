@@ -1,7 +1,7 @@
-import { ConnectWalletStepsTracker } from "./ConnectWalletStepsTracker";
+import { ConnectWalletStepsTracker } from './ConnectWalletStepsTracker'
 
 interface ConnectWalletProps {
-  isProcessing: boolean;
+  isProcessing: boolean
 }
 
 export const ConnectWallet = ({ isProcessing }: ConnectWalletProps) => {
@@ -10,7 +10,7 @@ export const ConnectWallet = ({ isProcessing }: ConnectWalletProps) => {
       <ConnectWalletStepsTracker
         steps={[
           {
-            status: isProcessing ? "in-processing" : "current",
+            status: isProcessing ? 'in-processing' : 'current',
             description: (
               <div>
                 <div className="font-semibold">Connect Wallet</div>
@@ -19,7 +19,7 @@ export const ConnectWallet = ({ isProcessing }: ConnectWalletProps) => {
             ),
           },
           {
-            status: "pending",
+            status: 'pending',
             description: (
               <div>
                 <div className="font-semibold">Verify address</div>
@@ -30,5 +30,5 @@ export const ConnectWallet = ({ isProcessing }: ConnectWalletProps) => {
         ]}
       />
     </div>
-  );
-};
+  )
+}

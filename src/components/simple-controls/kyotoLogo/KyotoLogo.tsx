@@ -1,4 +1,4 @@
-import { KyotoLogoSvg } from "./KyotoLogoSvg";
+import { KyotoLogoSvg } from './KyotoLogoSvg'
 
 export const KyotoLogo = () => {
   return (
@@ -11,5 +11,5 @@ export const KyotoLogo = () => {
         <div>Wallet</div>
       </div>
     </div>
-  );
-};
+  )
+}

@@ -1,16 +1,16 @@
-import { Modal } from "@/components/complex-controls/Modal";
-import { EnterEmailPassword } from "./EnterEmailPassword";
-import { ForgotPassword } from "./ForgotPassword";
+import { Modal } from '@/components/complex-controls/Modal'
+import { EnterEmailPassword } from './EnterEmailPassword'
+import { ForgotPassword } from './ForgotPassword'
 
 interface ModalLoginWizardEmailPasswordProps {
-  isForgotPassword: boolean;
-  isLoginError: boolean;
-  isResetPasswordEmailSent: boolean;
-  onClose(): void;
-  onBack(): void;
-  onChangeForgotPassword(val: boolean): void;
-  onLoginWithEmailPassword(email: string, password: string): void;
-  onSendResetPasswordEmail(email: string): void;
+  isForgotPassword: boolean
+  isLoginError: boolean
+  isResetPasswordEmailSent: boolean
+  onClose(): void
+  onBack(): void
+  onChangeForgotPassword(val: boolean): void
+  onLoginWithEmailPassword(email: string, password: string): void
+  onSendResetPasswordEmail(email: string): void
 }
 
 export const ModalLoginWizardEmailPassword = ({
@@ -41,9 +41,7 @@ export const ModalLoginWizardEmailPassword = ({
         {!isForgotPassword && (
           <EnterEmailPassword
             isLoginError={isLoginError}
-            onSubmit={({ email, password }) =>
-              onLoginWithEmailPassword(email, password)
-            }
+            onSubmit={({ email, password }) => onLoginWithEmailPassword(email, password)}
             onForgotPassword={() => onChangeForgotPassword(true)}
           />
         )}
@@ -56,5 +54,5 @@ export const ModalLoginWizardEmailPassword = ({
         )}
       </div>
     </Modal>
-  );
-};
+  )
+}

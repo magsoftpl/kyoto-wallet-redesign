@@ -1,15 +1,15 @@
-import { Draft } from "immer";
-import { immer } from "zustand/middleware/immer";
-import { create } from "@/utils/zustand/storeUtils";
+import { Draft } from 'immer'
+import { immer } from 'zustand/middleware/immer'
+import { create } from '@/utils/zustand/storeUtils'
 
 export interface SessionData {
-  accessToken: string;
-  refreshToken: string;
+  accessToken: string
+  refreshToken: string
 }
 
 interface AuthDataState {
-  session: SessionData | null;
-  setSessionData(data: SessionData | null): void;
+  session: SessionData | null
+  setSessionData(data: SessionData | null): void
 }
 
 const store = (set: Function) =>
@@ -17,10 +17,10 @@ const store = (set: Function) =>
     session: null,
     setSessionData(data: SessionData | null) {
       set((s: Draft<AuthDataState>) => {
-        s.session = data;
-      });
+        s.session = data
+      })
     },
-  } satisfies AuthDataState);
+  } satisfies AuthDataState)
 
-const useAuthData = create<AuthDataState>()(immer<AuthDataState>(store));
-export default useAuthData;
+const useAuthData = create<AuthDataState>()(immer<AuthDataState>(store))
+export default useAuthData

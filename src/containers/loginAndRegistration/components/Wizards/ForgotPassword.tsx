@@ -1,43 +1,35 @@
-import * as Yup from "yup";
-import { Input } from "@/components/simple-controls/input/Input";
-import { Button } from "@/components/simple-controls/button/Button";
-import { Form, Formik } from "formik";
-import { useState } from "react";
-import { getDisplayedError } from "@/utils/formik/getDisplayedError";
+import * as Yup from 'yup'
+import { Input } from '@/components/simple-controls/input/Input'
+import { Button } from '@/components/simple-controls/button/Button'
+import { Form, Formik } from 'formik'
+import { useState } from 'react'
+import { getDisplayedError } from '@/utils/formik/getDisplayedError'
 
 const validationSchema = Yup.object({
-  email: Yup.string()
-    .email("It is not valid email address")
-    .required("Email cannot be empty"),
-});
+  email: Yup.string().email('It is not valid email address').required('Email cannot be empty'),
+})
 
 interface ForgotPasswordProps {
-  isResetPasswordEmailSent: boolean;
-  onSubmit(email: string): void;
-  onLogin(): void;
+  isResetPasswordEmailSent: boolean
+  onSubmit(email: string): void
+  onLogin(): void
 }
 
-export const ForgotPassword = ({
-  isResetPasswordEmailSent,
-  onSubmit,
-  onLogin,
-}: ForgotPasswordProps) => {
-  const [lastSentAddress, setLastSentAddress] = useState("");
+export const ForgotPassword = ({ isResetPasswordEmailSent, onSubmit, onLogin }: ForgotPasswordProps) => {
+  const [lastSentAddress, setLastSentAddress] = useState('')
 
   const handleSubmit = ({ email }: { email: string }) => {
-    setLastSentAddress(email);
-    onSubmit(email);
-  };
+    setLastSentAddress(email)
+    onSubmit(email)
+  }
 
   return (
     <div className="w-full min-h-[25rem] px-4 flex flex-col justify-between uppercase">
       <div className="w-full">
-        <div className="w-full flex justify-center">
-          Enter your email address to recieve a lost password link
-        </div>
+        <div className="w-full flex justify-center">Enter your email address to recieve a lost password link</div>
         <Formik
           initialValues={{
-            email: "",
+            email: '',
           }}
           validationSchema={validationSchema}
           onSubmit={handleSubmit}
@@ -50,7 +42,7 @@ export const ForgotPassword = ({
                   value={values.email}
                   placeholder="EMAIL ADDRESS"
                   aria-label="Email address"
-                  error={getDisplayedError({ errors, touched }, "email")}
+                  error={getDisplayedError({ errors, touched }, 'email')}
                   autoFocus
                   onChange={handleChange}
                 />
@@ -66,8 +58,7 @@ export const ForgotPassword = ({
                     <div>Link has been sent to:</div>
                     <div> {lastSentAddress} </div>
                     <div className="w-full max-w-[35rem] text-center">
-                      if you have not received this email please check the
-                      address and retry
+                      if you have not received this email please check the address and retry
                     </div>
                   </>
                 )}
@@ -83,5 +74,5 @@ export const ForgotPassword = ({
         </Button>
       </div>
     </div>
-  );
-};
+  )
+}

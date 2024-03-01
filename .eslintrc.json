@@ -1,5 +1,6 @@
 {
   "extends": ["next", "prettier", "plugin:prettier/recommended"],
+  "plugins": ["unused-imports", "@typescript-eslint", "no-only-tests"],
   "rules": {
     "@next/next/no-img-element": "off",
     "@next/next/google-font-display": "off",

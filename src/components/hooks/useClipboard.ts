@@ -1,9 +1,9 @@
-import { useCallback } from "react";
+import { useCallback } from 'react'
 
 export const useClipboard = () => {
   const copy = useCallback((text: string) => {
-    navigator.clipboard.writeText(text);
-  }, []);
+    navigator.clipboard.writeText(text)
+  }, [])
 
-  return copy;
-};
+  return copy
+}
