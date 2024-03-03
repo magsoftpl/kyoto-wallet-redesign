@@ -19,11 +19,8 @@ function prepareApiClientFn() {
 
     const refreshSession = async (token: string | undefined) => {
       const data = await obtainNewTokens(token)
-      setSessionData({
-        accessToken: data.access_token,
-        refreshToken: data.refresh_token,
-      })
-      return data.access_token
+      setSessionData(data)
+      return data.accessToken
     }
 
     let newToken = accessToken

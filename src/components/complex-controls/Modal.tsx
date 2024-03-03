@@ -26,8 +26,8 @@ export const Modal: React.FC<ModalProps> = ({
 }) => {
   const modalContent = show ? (
     <>
-      <div className="absolute top-0 left-0 w-full h-full bg-blur backdrop-blur overflow-y-auto translate-x-0"></div>
-      <div className="fixed top-0 left-0 w-screen min-h-screen flex items-center justify-center">
+      <div className="absolute top-0 left-0 w-full h-full bg-blur backdrop-blur overflow-y-auto" />
+      <div className="fixed top-0 left-0 w-screen h-screen flex items-center justify-center overflow-y-auto">
         <ModalDialogWrapper
           title={title}
           hasBackButton={hasBackButton}

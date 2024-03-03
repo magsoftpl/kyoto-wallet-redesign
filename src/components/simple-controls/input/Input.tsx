@@ -5,11 +5,10 @@ interface InputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, '
   id: string
   label?: string
   icon?: React.ReactElement
-  required?: boolean
   error?: string
 }
 
-export const Input: React.FC<InputProps> = ({ label, icon, required, error, ...props }) => {
+export const Input: React.FC<InputProps> = ({ label, icon, error, ...props }) => {
   const labelClassName = classNames('block', 'mb-1.5', 'text-sm', 'font-medium', 'leading-6')
 
   const inputClassName = classNames(
@@ -30,7 +29,7 @@ export const Input: React.FC<InputProps> = ({ label, icon, required, error, ...p
   )
 
   return (
-    <div className="mt-1">
+    <div className="">
       {label && <label className={labelClassName}>{label}</label>}
       <div className="relative">
         <input className={inputClassName} {...props} />

@@ -12,6 +12,10 @@ export const logInfo = (text: string, payload: unknown) => {
   store('info', text, payload)
 }
 
+export const clearLogs = () => {
+  MAINTENANCE_LOGS.splice(0)
+}
+
 function store(analysis: string, text: string, payload: unknown) {
   MAINTENANCE_LOGS.unshift({
     analysis,

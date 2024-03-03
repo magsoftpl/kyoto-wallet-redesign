@@ -2,7 +2,7 @@ import { ButtonHTMLAttributes } from 'react'
 import classNames from 'classnames'
 
 type ButtonVariant = 'primary' | 'transparent'
-type ButtonLayout = 'default' | 'icon-only'
+type ButtonLayout = 'default' | 'compact' | 'icon-only'
 
 type BaseButtonProps = Omit<ButtonHTMLAttributes<{}>, 'className' | 'style'>
 
@@ -16,6 +16,7 @@ interface ButtonProps extends BaseButtonProps {
 export const Button = ({ variant, layout = 'default', uppercase = true, fullWidth, ...baseProps }: ButtonProps) => {
   const layoutClasses: Record<ButtonLayout, string> = {
     default: 'py-2 px-10 rounded-full',
+    compact: 'p-1 px-4 rounded-full',
     'icon-only': 'p-2 rounded-full shrink-0 grow-0',
   }
   const variantClasses: Record<ButtonVariant, string> = {

@@ -6,13 +6,19 @@ import { useLoginWizardLogic } from './logic/useLoginWizardLogic'
 import { ResetPasswordWizard } from './ResetPasswordWizard'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import { useEffect } from 'react'
+import { RegisterWizard } from './RegisterWizard'
+import { useRegistrationWizardLogic } from './logic/useRegistrationWizardLogic'
+import { useResetPasswordWizardLogic } from './logic/useResetPasswordWizardLogic'
 
 export const Login = () => {
   const router = useRouter()
   const pathname = usePathname()
-  const { loginWizard, resetPasswordWizard } = useLoginStateData()
-  const { showLoginWizard, showResetPasswordWizard } = useLoginWizardLogic()
   const searchParams = useSearchParams()
+
+  const { resetPasswordWizard } = useLoginStateData()
+  const { showLoginWizard } = useLoginWizardLogic()
+  const { showResetPasswordWizard } = useResetPasswordWizardLogic()
+  const { showRegistrationWizard } = useRegistrationWizardLogic()
 
   useEffect(() => {
     const token = searchParams.get('token')
@@ -24,15 +30,12 @@ export const Login = () => {
     }
   }, [pathname, resetPasswordWizard, router, searchParams, showResetPasswordWizard])
 
-  const handleLoginClick = () => {
-    showLoginWizard()
-  }
-
   return (
     <div>
-      <LoginTop onLoginClick={handleLoginClick} />
-      {!!loginWizard && <LoginWizard />}
-      {!!resetPasswordWizard && <ResetPasswordWizard />}
+      <LoginTop onLoginClick={showLoginWizard} onSignupClick={showRegistrationWizard} />
+      <LoginWizard />
+      <ResetPasswordWizard />
+      <RegisterWizard />
       <div className="h-[20rem]"></div>
     </div>
   )

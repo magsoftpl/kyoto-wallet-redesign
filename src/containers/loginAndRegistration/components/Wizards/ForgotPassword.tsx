@@ -24,9 +24,9 @@ export const ForgotPassword = ({ isResetPasswordEmailSent, onSubmit, onLogin }: 
   }
 
   return (
-    <div className="w-full min-h-[25rem] px-4 flex flex-col justify-between uppercase">
+    <div className="w-full min-h-[25rem] max-w-[25rem] px-4 flex flex-col justify-between uppercase">
       <div className="w-full">
-        <div className="w-full flex justify-center">Enter your email address to recieve a lost password link</div>
+        <div className="w-full text-center">Enter your email address to recieve a lost password link</div>
         <Formik
           initialValues={{
             email: '',

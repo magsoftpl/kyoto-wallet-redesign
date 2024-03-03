@@ -5,19 +5,20 @@ import { Form, Formik, FormikProps } from 'formik'
 import { PasswordInput } from '@/components/simple-controls/passwordInput/PasswordInput'
 import { useEffect, useRef } from 'react'
 import { getDisplayedError } from '@/utils/formik/getDisplayedError'
+import { OperationError } from './OperationError'
 
 const validationSchema = Yup.object({
   email: Yup.string().email('It is not valid email address').required('Email cannot be empty'),
-  password: Yup.string().required('Password cannot be empty'),
+  password: Yup.string().required('Password cannot be empty').min(6, 'Password is too short'),
 })
 
 interface EnterEmailPasswordProps {
-  isLoginError: boolean
+  errorCode: string
   onSubmit(values: { email: string; password: string }): void
   onForgotPassword(): void
 }
 
-export const EnterEmailPassword = ({ isLoginError, onSubmit, onForgotPassword }: EnterEmailPasswordProps) => {
+export const EnterEmailPassword = ({ errorCode, onSubmit, onForgotPassword }: EnterEmailPasswordProps) => {
   const formikRef = useRef<
     FormikProps<{
       email: string
@@ -26,15 +27,15 @@ export const EnterEmailPassword = ({ isLoginError, onSubmit, onForgotPassword }:
   >()
 
   useEffect(() => {
-    if (isLoginError && formikRef.current) {
+    if (!!errorCode && formikRef.current) {
       formikRef.current.setFieldValue('password', '', false)
     }
-  }, [isLoginError, formikRef])
+  }, [formikRef, errorCode])
 
   return (
-    <div className="w-full min-h-[25rem] px-4 flex flex-col justify-between uppercase">
+    <div className="w-full min-h-[25rem] max-w-[25rem] px-4 flex flex-col justify-between uppercase">
       <div className="w-full">
-        <div className="w-full pb-1 flex justify-center">Log in to your KYOTO account to oversee your funds</div>
+        <div className="w-full pb-1 text-center">Log in to your KYOTO account to oversee your funds</div>
         <Formik
           initialValues={{
             email: '',
@@ -71,7 +72,7 @@ export const EnterEmailPassword = ({ isLoginError, onSubmit, onForgotPassword }:
                 </Button>
               </div>
               <div className="w-full min-h-[1.6em] flex justify-center">
-                {isLoginError && 'Invalid email or password'}
+                <OperationError code={errorCode} />
               </div>
             </Form>
           )}

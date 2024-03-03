@@ -15,17 +15,24 @@ export const LoginWizard = () => {
     goToLoginMethod,
     changeForgotPasswordMode,
     loginWithEmailPassword,
+    submitLogin2FaCode,
+    initWalletLogin,
+    resetWalletLogin,
     loginWithWallet,
     sendPasswordResetRequest,
   } = useLoginWizardLogic()
   const navigator = useNavigator()
 
-  const handleLoginWithEmailPassword = (email: string, password: string) => {
-    loginWithEmailPassword(email, password, () => navigator('dashboard'))
+  const handleSubmit2FaCode = ({ code }: { code: string }) => {
+    submitLogin2FaCode(code, () => navigator('dashboard'))
   }
 
-  const handleLoginWithWallet = () => {
-    loginWithWallet(() => navigator('dashboard'))
+  const handleWalletAddressChange = () => {
+    resetWalletLogin()
+  }
+
+  const handleLoginWithWallet = (address: string, data: string) => {
+    loginWithWallet(address, data, () => navigator('dashboard'))
   }
 
   return (
@@ -36,20 +43,23 @@ export const LoginWizard = () => {
       {loginWizard?.kind === 'wallet' && (
         <ModalLoginWizardWallet
           provider={loginWizard.provider}
+          messageToSign={loginWizard.messageToSign}
           onClose={hideLoginWizard}
           onBack={goToLoginMethod}
+          onWalletAddressChanged={handleWalletAddressChange}
+          onWalletConnected={initWalletLogin}
           onLoginWithWallet={handleLoginWithWallet}
         />
       )}
       {loginWizard?.kind === 'email' && (
         <ModalLoginWizardEmailPassword
-          isForgotPassword={loginWizard.isForgotPassword}
-          isLoginError={loginWizard.isLoginError}
-          isResetPasswordEmailSent={loginWizard.resetPasswordEmailSent}
+          step={loginWizard.step}
+          errorCode={loginWizard.errorCode}
           onClose={hideLoginWizard}
           onBack={goToLoginMethod}
           onChangeForgotPassword={changeForgotPasswordMode}
-          onLoginWithEmailPassword={handleLoginWithEmailPassword}
+          onLoginWithEmailPassword={loginWithEmailPassword}
+          onSubmit2FaCode={handleSubmit2FaCode}
           onSendResetPasswordEmail={sendPasswordResetRequest}
         />
       )}

@@ -1,28 +1,31 @@
 import { Modal } from '@/components/complex-controls/Modal'
 import { EnterEmailPassword } from './EnterEmailPassword'
 import { ForgotPassword } from './ForgotPassword'
+import { Enter2FaCode } from './Enter2FaCode'
+import { EmailLoginOperationStep } from '../../store/loginData.slice'
 
 interface ModalLoginWizardEmailPasswordProps {
-  isForgotPassword: boolean
-  isLoginError: boolean
-  isResetPasswordEmailSent: boolean
+  step: EmailLoginOperationStep
+  errorCode: string
   onClose(): void
   onBack(): void
   onChangeForgotPassword(val: boolean): void
   onLoginWithEmailPassword(email: string, password: string): void
+  onSubmit2FaCode(code: { code: string }): void
   onSendResetPasswordEmail(email: string): void
 }
 
 export const ModalLoginWizardEmailPassword = ({
-  isForgotPassword,
-  isLoginError,
-  isResetPasswordEmailSent,
+  step,
+  errorCode,
   onClose,
   onBack,
   onChangeForgotPassword,
   onLoginWithEmailPassword,
+  onSubmit2FaCode,
   onSendResetPasswordEmail,
 }: ModalLoginWizardEmailPasswordProps) => {
+  const isForgotPassword = step === 'forgot-password' || step === 'forgot-password-link-sent'
   return (
     <Modal
       theme="dark"
@@ -37,17 +40,18 @@ export const ModalLoginWizardEmailPassword = ({
       onClose={onClose}
       onBack={onBack}
     >
-      <div className="w-full md:min-w-[40rem]">
-        {!isForgotPassword && (
+      <div className="w-full flex justify-center">
+        {step === 'credentials' && (
           <EnterEmailPassword
-            isLoginError={isLoginError}
+            errorCode={errorCode}
             onSubmit={({ email, password }) => onLoginWithEmailPassword(email, password)}
             onForgotPassword={() => onChangeForgotPassword(true)}
           />
         )}
+        {step === 'otp' && <Enter2FaCode errorCode={errorCode} onSubmit={onSubmit2FaCode} />}
         {isForgotPassword && (
           <ForgotPassword
-            isResetPasswordEmailSent={isResetPasswordEmailSent}
+            isResetPasswordEmailSent={step === 'forgot-password-link-sent'}
             onSubmit={onSendResetPasswordEmail}
             onLogin={() => onChangeForgotPassword(false)}
           />

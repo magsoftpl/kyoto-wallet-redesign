@@ -6,11 +6,16 @@ import { Modal } from '@/components/complex-controls/Modal'
 import { WalletProvider } from '../../store/loginData.slice'
 
 interface ModalLoginWizardMethodSelectProps {
+  walletsOnly?: boolean
   onMethodSelect(method: 'email' | { kind: 'wallet'; provider: WalletProvider }): void
   onClose(): void
 }
 
-export const ModalLoginWizardMethodSelect = ({ onMethodSelect, onClose }: ModalLoginWizardMethodSelectProps) => {
+export const ModalLoginWizardMethodSelect = ({
+  walletsOnly = false,
+  onMethodSelect,
+  onClose,
+}: ModalLoginWizardMethodSelectProps) => {
   return (
     <Modal theme="dark" show title="Connect wallet" onClose={onClose}>
       <div className="w-full md:min-w-[40rem] p-4 flex flex-col uppercase gap-4">
@@ -18,22 +23,24 @@ export const ModalLoginWizardMethodSelect = ({ onMethodSelect, onClose }: ModalL
           icon={<Image width={32} height={32} src="/icons/metamask.png" alt="metamask logo" />}
           label="Metamask"
           onClick={() => onMethodSelect({ kind: 'wallet', provider: 'metamask' })}
-        ></SelectMethodButton>
+        />
         <SelectMethodButton
           icon={<Image width={32} height={32} src="/icons/coinbase.png" alt="metamask logo" />}
           label="Coinbase wallet"
           onClick={() => onMethodSelect({ kind: 'wallet', provider: 'coinbase' })}
-        ></SelectMethodButton>
+        />
         <SelectMethodButton
           icon={<Image width={32} height={32} src="/icons/brave.png" alt="metamask logo" />}
           label="Brave wallet"
           onClick={() => onMethodSelect({ kind: 'wallet', provider: 'brave' })}
-        ></SelectMethodButton>
-        <SelectMethodButton
-          icon={<Image width={32} height={32} src="/icons/verified.png" alt="metamask logo" />}
-          label="Login with email"
-          onClick={() => onMethodSelect('email')}
-        ></SelectMethodButton>
+        />
+        {!walletsOnly && (
+          <SelectMethodButton
+            icon={<Image width={32} height={32} src="/icons/verified.png" alt="metamask logo" />}
+            label="Login with email"
+            onClick={() => onMethodSelect('email')}
+          />
+        )}
       </div>
     </Modal>
   )

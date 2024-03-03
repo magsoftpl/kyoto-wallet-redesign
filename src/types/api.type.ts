@@ -1,6 +1,6 @@
 export interface SessionDataResponse {
-  access_token: string
-  refresh_token: string
+  accessToken: string
+  refreshToken: string
 }
 
 export interface UserProfileResponse {
@@ -8,12 +8,6 @@ export interface UserProfileResponse {
     email: string
     firstName: string
     lastName: string
-    country: string
-    dob: string
-    residencyCountry: string
-    residencyAddress: string
-    phoneNumber: string
     walletAddress: string
-    avatarFilename: string
   }
 }

@@ -4,9 +4,10 @@ import Image from 'next/image'
 
 interface LoginTopProps {
   onLoginClick(): void
+  onSignupClick(): void
 }
 
-export const LoginTop = ({ onLoginClick }: LoginTopProps) => {
+export const LoginTop = ({ onLoginClick, onSignupClick }: LoginTopProps) => {
   return (
     <div className="w-full h-[50rem] p-16 flex flex-col gap-2 bg-secondary-950">
       <div>
@@ -26,7 +27,11 @@ export const LoginTop = ({ onLoginClick }: LoginTopProps) => {
           <div className="text-white text-xl uppercase">
             Join over 350k+ KYOTO holders earning 18.25% staking rewards per year
           </div>
-          <div></div>
+          <div>
+            <Button variant="primary" onClick={onSignupClick}>
+              Sign up
+            </Button>
+          </div>
         </div>
         <div className="relative hidden lg:block h-full w-[28rem]">
           <div className="absolute bottom-[-12rem] w-full h-[50rem]">

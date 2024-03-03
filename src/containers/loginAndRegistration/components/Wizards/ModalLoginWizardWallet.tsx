@@ -9,20 +9,26 @@ import { useNetworkConfig } from '@/containers/web3/useNetworkConfigs'
 
 interface ModalLoginWizardWalletProps {
   provider: WalletProvider
+  messageToSign: string | null
   onClose(): void
   onBack(): void
-  onLoginWithWallet(): void
+  onWalletAddressChanged(address: string | undefined): void
+  onWalletConnected(address: string): void
+  onLoginWithWallet(address: string, data: string): void
 }
 
 export const ModalLoginWizardWallet = ({
   provider,
+  messageToSign,
   onClose,
   onBack,
+  onWalletAddressChanged,
+  onWalletConnected,
   onLoginWithWallet,
 }: ModalLoginWizardWalletProps) => {
   const { connectors, connect, isPending: isConnectionPending } = useConnect()
   const { address, connector, isConnected: isAccountConnected } = useAccount()
-  const { signMessage, isPending: isSigningPending, isSuccess: isSigningSuccess } = useSignMessage()
+  const { signMessage, isPending: isSigningPending, isSuccess: isSigningSuccess, data } = useSignMessage()
 
   const [isConnectActive, setIsConnectActive] = useState(false)
   const chainId = useChainId()
@@ -45,10 +51,20 @@ export const ModalLoginWizardWallet = ({
   }, [connectorId, connectors, provider])
 
   useEffect(() => {
-    if (isSigningSuccess) {
-      onLoginWithWallet() //TODO: verify signature
+    onWalletAddressChanged(address)
+  }, [address, onWalletAddressChanged])
+
+  useEffect(() => {
+    if (!!messageToSign) {
+      signMessage({ message: messageToSign })
     }
-  }, [isSigningSuccess, onLoginWithWallet])
+  }, [messageToSign, signMessage])
+
+  useEffect(() => {
+    if (isSigningSuccess && address && data) {
+      onLoginWithWallet(address, data)
+    }
+  }, [address, data, isSigningSuccess, onLoginWithWallet])
 
   const handleConnect = () => {
     if (!isConnected) {
@@ -59,9 +75,8 @@ export const ModalLoginWizardWallet = ({
       connect({ connector, chainId: kyoto.chainId })
       return
     }
-    if (isConnected) {
-      const message = `Kyoto Wallet Authentication \n\nWallet Address: ${address}\n\nIssued at:\n${new Date().toLocaleString()}`
-      signMessage({ message })
+    if (isConnected && address) {
+      onWalletConnected(address)
     }
   }
 

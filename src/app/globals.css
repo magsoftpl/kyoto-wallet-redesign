@@ -7,3 +7,22 @@
   padding: 0;
   box-sizing: border-box;
 }
+
+@layer components {
+  .flags-dropdown > button {
+    @apply h-11 min-w-[10rem] border-none !rounded-md bg-white text-black uppercase;
+  }
+
+  .flags-dropdown > ul {
+    @apply bg-white text-black;
+  }
+  .flags-dropdown > ul > li span {
+    @apply text-black;
+  }
+  .flags-dropdown > ul > li:hover {
+    @apply bg-inactive-100;
+  }
+  .flags-dropdown > ul > li:hover span {
+    @apply text-secondary-950;
+  }
+}

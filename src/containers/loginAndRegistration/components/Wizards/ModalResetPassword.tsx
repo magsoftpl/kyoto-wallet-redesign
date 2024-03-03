@@ -11,7 +11,7 @@ interface ModalResetPasswordProps {
 export const ModalResetPassword = ({ passwordResetStatus, onLogin, onPasswordReset }: ModalResetPasswordProps) => {
   return (
     <Modal theme="dark" show title="Reset password" hasCloseButton={false}>
-      <div className="w-full p-4 flex flex-col uppercase gap-4">
+      <div className="w-full md:w-[25rem] p-4 flex flex-col uppercase gap-4">
         <ChangePassword
           showSwitchToLogin
           passwordResetStatus={passwordResetStatus}

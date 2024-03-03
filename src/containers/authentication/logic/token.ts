@@ -25,7 +25,7 @@ export const obtainNewTokens = async (refreshToken: string | undefined): Promise
       })
     }
     const response = await pendingRefresh
-    if (!response?.data?.access_token) {
+    if (!response?.data?.accessToken) {
       throw new Error(`Failed to refresh token`)
     }
     return response.data

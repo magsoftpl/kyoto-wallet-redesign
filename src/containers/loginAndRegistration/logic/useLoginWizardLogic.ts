@@ -7,13 +7,14 @@ import { useSession } from '@/containers/authentication/useSession'
 import { handleOperationError } from '@/containers/errorHandling/errorHandlingActions'
 
 export const useLoginWizardLogic = () => {
-  const { loginWizard, resetPasswordWizard, setLoginWizard, setResetPasswordWizard } = useLoginStateData()
+  const { loginWizard, setLoginWizard, setResetPasswordWizard, setRegistrationWizard } = useLoginStateData()
   const { startSession } = useSession()
 
   const showLoginWizard = useCallback(() => {
     setLoginWizard({ kind: 'method-select' })
     setResetPasswordWizard(null)
-  }, [setLoginWizard, setResetPasswordWizard])
+    setRegistrationWizard(null)
+  }, [setLoginWizard, setRegistrationWizard, setResetPasswordWizard])
 
   const hideLoginWizard = useCallback(() => {
     setLoginWizard(null)
@@ -32,13 +33,14 @@ export const useLoginWizardLogic = () => {
         payload === 'email'
           ? {
               kind: 'email',
-              isForgotPassword: false,
-              isLoginError: false,
-              resetPasswordEmailSent: false,
+              email: '',
+              step: 'credentials',
+              errorCode: '',
             }
           : {
               kind: 'wallet',
               provider: payload.provider,
+              messageToSign: null,
             }
       setLoginWizard(initialState)
     },
@@ -52,37 +54,69 @@ export const useLoginWizardLogic = () => {
   }, [setLoginWizard])
 
   const changeForgotPasswordMode = useCallback(
-    (val: boolean) => {
+    (isForgotPassword: boolean) => {
       if (loginWizard?.kind !== 'email') {
         return
       }
       setLoginWizard({
         ...loginWizard,
-        isForgotPassword: val,
-        resetPasswordEmailSent: false,
+        step: isForgotPassword ? 'forgot-password' : 'credentials',
       })
     },
     [loginWizard, setLoginWizard],
   )
 
   const loginWithEmailPassword = useCallback(
-    async (email: string, password: string, navigate: () => void) => {
+    async (email: string, password: string) => {
+      if (loginWizard?.kind !== 'email') {
+        return
+      }
       try {
         const client = await getApiClient.withoutAuth()
-        const loginResponse = await client.post<SessionDataResponse>('login', {
+        await client.post('login/email', {
           email,
           password,
         })
-        await startSession(loginResponse.data.access_token, loginResponse.data.refresh_token, navigate)
-        setLoginWizard(null)
+        setLoginWizard({
+          ...loginWizard,
+          email,
+          step: 'otp',
+          errorCode: '',
+        })
       } catch (err) {
-        if (err instanceof AxiosError && err.response?.status === 401) {
-          if (loginWizard?.kind !== 'email') {
-            return
-          }
+        const errorCode = getErrorCode(err)
+        if (!!errorCode) {
           setLoginWizard({
             ...loginWizard,
-            isLoginError: true,
+            errorCode,
+          })
+          return
+        }
+        handleOperationError('Error during login operation', err)
+      }
+    },
+    [loginWizard, setLoginWizard],
+  )
+
+  const submitLogin2FaCode = useCallback(
+    async (code: string, navigate: () => void) => {
+      if (loginWizard?.kind !== 'email') {
+        return
+      }
+      try {
+        const client = await getApiClient.withoutAuth()
+        const loginResponse = await client.post<SessionDataResponse>('login/otp-verify', {
+          email: loginWizard.email,
+          code,
+        })
+        await startSession(loginResponse.data.accessToken, loginResponse.data.refreshToken, navigate)
+        setLoginWizard(null)
+      } catch (err) {
+        const errorCode = getErrorCode(err)
+        if (!!errorCode) {
+          setLoginWizard({
+            ...loginWizard,
+            errorCode,
           })
           return
         }
@@ -92,12 +126,48 @@ export const useLoginWizardLogic = () => {
     [loginWizard, setLoginWizard, startSession],
   )
 
-  const loginWithWallet = useCallback(
-    async (navigate: () => void) => {
+  const resetWalletLogin = useCallback(async () => {
+    if (loginWizard?.kind !== 'wallet' || !loginWizard.messageToSign) {
+      return
+    }
+    try {
+      setLoginWizard({
+        ...loginWizard,
+        messageToSign: null,
+      })
+    } catch (err) {
+      handleOperationError('Error during login operation', err)
+    }
+  }, [loginWizard, setLoginWizard])
+
+  const initWalletLogin = useCallback(
+    async (walletAddress: string) => {
+      if (loginWizard?.kind !== 'wallet') {
+        return
+      }
       try {
         const client = await getApiClient.withoutAuth()
-        const loginResponse = await client.post<SessionDataResponse>('wallet')
-        await startSession(loginResponse.data.access_token, loginResponse.data.refresh_token, navigate)
+        const response = await client.post<{ messageToSign: string }>('login/wallet', { walletAddress })
+        setLoginWizard({
+          ...loginWizard,
+          messageToSign: response.data.messageToSign,
+        })
+      } catch (err) {
+        handleOperationError('Error during login operation', err)
+      }
+    },
+    [loginWizard, setLoginWizard],
+  )
+
+  const loginWithWallet = useCallback(
+    async (walletAddress: string, signature: string, navigate: () => void) => {
+      try {
+        const client = await getApiClient.withoutAuth()
+        const loginResponse = await client.post<SessionDataResponse>('login/wallet-signature', {
+          walletAddress,
+          signature,
+        })
+        await startSession(loginResponse.data.accessToken, loginResponse.data.refreshToken, navigate)
         setLoginWizard(null)
       } catch (err) {
         handleOperationError('Error during login operation', err)
@@ -108,6 +178,9 @@ export const useLoginWizardLogic = () => {
 
   const sendPasswordResetRequest = useCallback(
     async (email: string) => {
+      if (loginWizard?.kind !== 'email') {
+        return
+      }
       try {
         const client = await getApiClient.withoutAuth()
         await client.post('password/resetpassword', {
@@ -118,55 +191,21 @@ export const useLoginWizardLogic = () => {
         }
         setLoginWizard({
           ...loginWizard,
-          resetPasswordEmailSent: true,
+          step: 'forgot-password-link-sent',
         })
       } catch (err) {
+        const errorCode = getErrorCode(err)
+        if (!!errorCode) {
+          setLoginWizard({
+            ...loginWizard,
+            errorCode,
+          })
+          return
+        }
         handleOperationError('Error when sending password reset link', err)
       }
     },
     [loginWizard, setLoginWizard],
-  )
-
-  const showResetPasswordWizard = useCallback(
-    (token: string) => {
-      setResetPasswordWizard({
-        token,
-        passwordResetStatus: null,
-      })
-    },
-    [setResetPasswordWizard],
-  )
-
-  const resetPassword = useCallback(
-    async (password: string) => {
-      try {
-        if (!resetPasswordWizard) {
-          return
-        }
-        const client = await getApiClient.withoutAuth()
-        await client.post('password/resetpassword/newpassword', {
-          token: resetPasswordWizard.token,
-          password,
-        })
-        setResetPasswordWizard({
-          ...resetPasswordWizard,
-          passwordResetStatus: 'success',
-        })
-      } catch (err) {
-        if (err instanceof AxiosError && err.response?.status === 401) {
-          if (!resetPasswordWizard) {
-            return
-          }
-          setResetPasswordWizard({
-            ...resetPasswordWizard,
-            passwordResetStatus: 'error',
-          })
-          return
-        }
-        handleOperationError('Error when setting new password', err)
-      }
-    },
-    [resetPasswordWizard, setResetPasswordWizard],
   )
 
   const result = useMemo(
@@ -177,10 +216,11 @@ export const useLoginWizardLogic = () => {
       goToLoginMethod,
       changeForgotPasswordMode,
       loginWithEmailPassword,
+      submitLogin2FaCode,
+      initWalletLogin,
+      resetWalletLogin,
       loginWithWallet,
       sendPasswordResetRequest,
-      showResetPasswordWizard,
-      resetPassword,
     }),
     [
       showLoginWizard,
@@ -189,12 +229,20 @@ export const useLoginWizardLogic = () => {
       goToLoginMethod,
       changeForgotPasswordMode,
       loginWithEmailPassword,
+      submitLogin2FaCode,
+      initWalletLogin,
+      resetWalletLogin,
       loginWithWallet,
       sendPasswordResetRequest,
-      showResetPasswordWizard,
-      resetPassword,
     ],
   )
 
   return result
+}
+
+const getErrorCode = (error: unknown) => {
+  if (error instanceof AxiosError && (error.response?.status === 401 || error.response?.status === 409)) {
+    return error.response?.data?.code
+  }
+  return null
 }

@@ -27,7 +27,7 @@ export const ModalDialogWrapper: React.FC<ModalDialogWrapperProps> = ({
 }) => {
   const showClose = hasCloseButton || hasCloseButton === undefined
   const wrapperClass = classNames(
-    'relative w-full md:min-w-[25rem] md:w-auto my-auto flex flex-col items-center rounded-lg',
+    'relative w-full md:w-auto my-auto flex flex-col items-center rounded-lg',
     theme === 'dark' ? 'bg-secondary-950 text-white' : 'bg-white text-secondary-950',
   )
 
