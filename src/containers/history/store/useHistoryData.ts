@@ -22,7 +22,7 @@ export interface HistoryItem {
 }
 
 export const useHistoryData = ({ address }: { address: string | undefined }) => {
-  const { data } = useQuery<HistoryResponse>(history(address!), { skip: !address })
+  const { data, refetch } = useQuery<HistoryResponse>(history(address!), { skip: !address })
 
   const result = useMemo(() => {
     if (!data) {
@@ -71,5 +71,5 @@ export const useHistoryData = ({ address }: { address: string | undefined }) => 
     ].sort((res) => res.blockTimestamp)
     return res
   }, [data])
-  return result
+  return { data: result, refetch }
 }
