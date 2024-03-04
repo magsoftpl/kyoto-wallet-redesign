@@ -6,6 +6,7 @@ import { AuthSessionProvider } from '@/containers/authentication/authSessionProv
 import { Web3Provider } from '@/containers/web3/Web3Provider'
 import { appDescription } from '@/utils/constants'
 import { ReactNode } from 'react'
+import { ApolloStakingGraphProvider } from '@/containers/apolloStakingGraph/ApolloStakingGraphProvider'
 
 const inter = Inter({
   subsets: ['latin'],
@@ -30,9 +31,11 @@ export default function RootLayout({
       </head>
       <body className={inter.className}>
         <EnvConfigProvider>
-          <Web3Provider>
-            <AuthSessionProvider>{children}</AuthSessionProvider>
-          </Web3Provider>
+          <ApolloStakingGraphProvider>
+            <Web3Provider>
+              <AuthSessionProvider>{children}</AuthSessionProvider>
+            </Web3Provider>
+          </ApolloStakingGraphProvider>
         </EnvConfigProvider>
       </body>
     </html>

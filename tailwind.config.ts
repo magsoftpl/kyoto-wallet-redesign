@@ -13,6 +13,7 @@ const config: Config = {
       white: '#FFFFFF',
       black: '#000000',
       red: '#ff0000',
+      blue: '#0000ff',
       primary: {
         '50': '#ffffe5',
         '100': '#fdffc7',
