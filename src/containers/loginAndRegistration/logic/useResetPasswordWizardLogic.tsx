@@ -1,8 +1,8 @@
 import { useCallback, useMemo } from 'react'
 import useLoginStateData from '../store/loginData.slice'
-import { AxiosError } from 'axios'
 import { handleOperationError } from '@/containers/errorHandling/errorHandlingActions'
 import { getApiClient } from '@/containers/authentication/authClient'
+import { getErrorCode } from './getErrorCode'
 
 export const useResetPasswordWizardLogic = () => {
   const { resetPasswordWizard, setResetPasswordWizard } = useLoginStateData()
@@ -11,7 +11,8 @@ export const useResetPasswordWizardLogic = () => {
     (token: string) => {
       setResetPasswordWizard({
         token,
-        passwordResetStatus: null,
+        errorCode: null,
+        isSuccess: false,
       })
     },
     [setResetPasswordWizard],
@@ -19,10 +20,10 @@ export const useResetPasswordWizardLogic = () => {
 
   const resetPassword = useCallback(
     async (password: string) => {
+      if (!resetPasswordWizard) {
+        return
+      }
       try {
-        if (!resetPasswordWizard) {
-          return
-        }
         const client = await getApiClient.withoutAuth()
         await client.post('password/resetpassword/newpassword', {
           token: resetPasswordWizard.token,
@@ -30,20 +31,19 @@ export const useResetPasswordWizardLogic = () => {
         })
         setResetPasswordWizard({
           ...resetPasswordWizard,
-          passwordResetStatus: 'success',
+          errorCode: null,
+          isSuccess: true,
         })
       } catch (err) {
-        if (err instanceof AxiosError && err.response?.status === 401) {
-          if (!resetPasswordWizard) {
-            return
-          }
+        const errorCode = getErrorCode(err)
+        if (!!errorCode) {
           setResetPasswordWizard({
             ...resetPasswordWizard,
-            passwordResetStatus: 'error',
+            errorCode,
           })
           return
         }
-        handleOperationError('Error when setting new password', err)
+        handleOperationError('Error when reseting password', err)
       }
     },
     [resetPasswordWizard, setResetPasswordWizard],

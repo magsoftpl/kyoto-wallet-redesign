@@ -2,8 +2,8 @@ import { useCallback, useMemo } from 'react'
 import useLoginStateData, { WalletProvider } from '../store/loginData.slice'
 import { getApiClient } from '@/containers/authentication/authClient'
 import { handleOperationError } from '@/containers/errorHandling/errorHandlingActions'
-import { AxiosError } from 'axios'
 import { useCurrentUserDisplayData } from '@/containers/authentication/useCurrentUserDisplayData'
+import { getErrorCode } from './getErrorCode'
 
 export const useConnectToNetworkWizardLogic = () => {
   const { connectToNetworkWizard, setConnectToNetworkWizard } = useLoginStateData()
@@ -124,11 +124,4 @@ export const useConnectToNetworkWizardLogic = () => {
     ],
   )
   return result
-}
-
-const getErrorCode = (error: unknown) => {
-  if (error instanceof AxiosError && (error.response?.status === 401 || error.response?.status === 409)) {
-    return error.response?.data?.code
-  }
-  return null
 }

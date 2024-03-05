@@ -29,7 +29,8 @@ export type PasswordResetStatus = 'success' | 'error'
 
 export interface ResetPasswordWizardData {
   token: string
-  passwordResetStatus: PasswordResetStatus | null
+  errorCode: string | null
+  isSuccess: boolean
 }
 
 export interface RegistrationWizardData {
@@ -56,6 +57,14 @@ export interface ConnectToNetworkWizardData {
   errorCode: string | null
 }
 
+export type SettingsResetPasswordWizardStep = 'reset' | 'forgot-password' | 'forgot-password-link-sent'
+
+interface SettingsResetPasswordWizardData {
+  step: SettingsResetPasswordWizardStep
+  email: string | null
+  errorCode: string | null
+}
+
 interface LoginState {
   loginWizard: LoginWizardData | null
   setLoginWizard(data: LoginWizardData | null): void
@@ -65,6 +74,8 @@ interface LoginState {
   setRegistrationWizard(data: RegistrationWizardData | null): void
   connectToNetworkWizard: ConnectToNetworkWizardData | null
   setConnectToNetworkWizard(data: ConnectToNetworkWizardData | null): void
+  settingsResetPasswordWizard: SettingsResetPasswordWizardData | null
+  setSettingsResetPasswordWizard(data: SettingsResetPasswordWizardData | null): void
 }
 
 const store = (set: Function) =>
@@ -73,6 +84,7 @@ const store = (set: Function) =>
     resetPasswordWizard: null,
     registrationWizard: null,
     connectToNetworkWizard: null,
+    settingsResetPasswordWizard: null,
     setLoginWizard(data: LoginWizardData | null) {
       set((s: Draft<LoginState>) => {
         s.loginWizard = data
@@ -91,6 +103,11 @@ const store = (set: Function) =>
     setConnectToNetworkWizard(data: ConnectToNetworkWizardData | null) {
       set((s: Draft<LoginState>) => {
         s.connectToNetworkWizard = data
+      })
+    },
+    setSettingsResetPasswordWizard(data: SettingsResetPasswordWizardData | null) {
+      set((s: Draft<LoginState>) => {
+        s.settingsResetPasswordWizard = data
       })
     },
   } satisfies LoginState)

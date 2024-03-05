@@ -5,5 +5,5 @@ export interface NoDataProps {
 }
 
 export const NoData: FC<NoDataProps> = ({ text }: NoDataProps) => {
-  return <div className="w-full py-6 text-center text-xs">{text || 'No records'}</div>
+  return <div className="w-full py-6 text-center uppercase">{text || 'No records'}</div>
 }

@@ -7,6 +7,10 @@ export const OperationError = ({ code }: { code: string }) => {
         return 'User with this email is already registerd'
       case 'AUTH_FAILED':
         return 'Invalid user or password'
+      case 'OLD_PASSWORD_INVALID':
+        return 'Invalid old password'
+      case 'INVALID_TOKEN':
+        return 'Ivalid or expired reset password link'
       default:
         return 'Operation error'
     }

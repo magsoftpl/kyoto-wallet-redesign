@@ -10,12 +10,18 @@ const validationSchema = Yup.object({
 })
 
 interface ForgotPasswordProps {
+  showSwitchToLogin?: boolean
   isResetPasswordEmailSent: boolean
   onSubmit(email: string): void
-  onLogin(): void
+  onLogin?(): void
 }
 
-export const ForgotPassword = ({ isResetPasswordEmailSent, onSubmit, onLogin }: ForgotPasswordProps) => {
+export const ForgotPassword = ({
+  showSwitchToLogin = true,
+  isResetPasswordEmailSent,
+  onSubmit,
+  onLogin,
+}: ForgotPasswordProps) => {
   const [lastSentAddress, setLastSentAddress] = useState('')
 
   const handleSubmit = ({ email }: { email: string }) => {
@@ -69,9 +75,11 @@ export const ForgotPassword = ({ isResetPasswordEmailSent, onSubmit, onLogin }: 
       </div>
 
       <div className="w-full p-2 flex justify-end text-primary-400">
-        <Button variant="transparent" layout="icon-only" onClick={onLogin}>
-          Login
-        </Button>
+        {showSwitchToLogin && (
+          <Button variant="transparent" layout="icon-only" onClick={onLogin}>
+            Login
+          </Button>
+        )}
       </div>
     </div>
   )

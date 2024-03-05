@@ -13,7 +13,8 @@ export const ResetPasswordWizard = () => {
     <>
       {resetPasswordWizard && (
         <ModalResetPassword
-          passwordResetStatus={resetPasswordWizard.passwordResetStatus}
+          errorCode={resetPasswordWizard.errorCode}
+          isSuccess={resetPasswordWizard.isSuccess}
           onLogin={showLoginWizard}
           onPasswordReset={resetPassword}
         />

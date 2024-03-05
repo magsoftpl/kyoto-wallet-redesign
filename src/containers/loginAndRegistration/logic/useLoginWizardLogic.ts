@@ -1,10 +1,10 @@
 import { useCallback, useMemo } from 'react'
-import { AxiosError } from 'axios'
 import useLoginStateData, { LoginWizardData, WalletProvider } from '../store/loginData.slice'
 import { getApiClient } from '@/containers/authentication/authClient'
 import { SessionDataResponse } from '@/types/api.type'
 import { useSession } from '@/containers/authentication/useSession'
 import { handleOperationError } from '@/containers/errorHandling/errorHandlingActions'
+import { getErrorCode } from './getErrorCode'
 
 export const useLoginWizardLogic = () => {
   const { loginWizard, setLoginWizard, setResetPasswordWizard, setRegistrationWizard } = useLoginStateData()
@@ -238,11 +238,4 @@ export const useLoginWizardLogic = () => {
   )
 
   return result
-}
-
-const getErrorCode = (error: unknown) => {
-  if (error instanceof AxiosError && (error.response?.status === 401 || error.response?.status === 409)) {
-    return error.response?.data?.code
-  }
-  return null
 }

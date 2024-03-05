@@ -3,7 +3,7 @@ import { Button } from '@/components/simple-controls/button/Button'
 import { Form, Formik } from 'formik'
 import { getDisplayedError } from '@/utils/formik/getDisplayedError'
 import { PasswordInput } from '@/components/simple-controls/passwordInput/PasswordInput'
-import { PasswordResetStatus } from '../../store/loginData.slice'
+import { OperationError } from './OperationError'
 
 const validationSchema = Yup.object({
   showOldPassword: Yup.boolean(),
@@ -21,26 +21,35 @@ const validationSchema = Yup.object({
 interface ChangePasswordProps {
   showOldPassword: boolean
   showSwitchToLogin: boolean
-  passwordResetStatus: PasswordResetStatus | null
+  isSuccess: boolean
+  errorCode: string | null
   onLogin?(): void
-  onPasswordReset(password: string): void
+  onPasswordReset(password: string, oldPassword: string): void
 }
 
 export const ChangePassword = ({
   showOldPassword,
   showSwitchToLogin,
-  passwordResetStatus,
+  isSuccess,
+  errorCode,
   onLogin,
   onPasswordReset,
 }: ChangePasswordProps) => {
-  const handleSubmit = ({ password }: { oldPassword: string; password: string; passwordConfirm: string }) => {
-    onPasswordReset(password)
+  const handleSubmit = ({
+    password,
+    oldPassword,
+  }: {
+    oldPassword: string
+    password: string
+    passwordConfirm: string
+  }) => {
+    onPasswordReset(password, oldPassword)
   }
 
   return (
     <div className="w-full min-h-[25rem] px-4 flex flex-col justify-between uppercase">
       <div className="w-full">
-        <div className="w-full p-2 flex justify-center">Enter your new password for access to KYOTO Wallet</div>
+        <div className="w-full p-2 flex text-center">Enter your new password for access to KYOTO Wallet</div>
         <Formik
           initialValues={{
             showOldPassword,
@@ -89,15 +98,15 @@ export const ChangePassword = ({
                 </Button>
               </div>
               <div className="w-full min-h-[1.6em] flex justify-center">
-                {passwordResetStatus === 'success' && 'Password reset'}
-                {passwordResetStatus === 'error' && 'Invalid or expired link'}
+                {isSuccess && 'Password reset'}
+                {!!errorCode && <OperationError code={errorCode} />}
               </div>
             </Form>
           )}
         </Formik>
       </div>
 
-      {showSwitchToLogin && passwordResetStatus === 'success' && (
+      {showSwitchToLogin && isSuccess && (
         <div className="w-full p-2 flex justify-end text-primary-400">
           <Button variant="transparent" layout="icon-only" onClick={onLogin}>
             Login

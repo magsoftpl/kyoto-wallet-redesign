@@ -83,5 +83,5 @@ export const HistoryDataTable = ({ data }: { data: HistoryItem[] }) => {
     columns: credentialsColumns,
     getCoreRowModel: getCoreRowModel(),
   })
-  return <DataTable definition={table} noDataText="No history records" listViewOnSmall />
+  return <DataTable definition={table} noDataText="No history data" listViewOnSmall />
 }

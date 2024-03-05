@@ -69,7 +69,7 @@ export const DataTable: React.FC<DataTableProps> = ({ noDataText, definition, li
             <tr key={row.id} className={rowClass}>
               {row.getVisibleCells().map((cell) => {
                 const clazz = classNames(
-                  'relative py-4',
+                  'relative py-2',
                   listViewOnSmall ? 'pl-60 lg:pl-6 pr-6' : 'px-6',
                   listViewOnSmall && 'block lg:table-cell',
                   listViewOnSmall && 'before:absolute before:left-6 before:inline-block lg:before:hidden',
