@@ -1,5 +1,7 @@
 import { useMemo } from 'react'
 import { getEnvConfigValue } from '../envConfig/envConfig'
+import { bsc as bscProvider } from 'wagmi/chains'
+import { Chain } from '@rainbow-me/rainbowkit'
 
 export const useNetworkConfig = () => {
   const kyotoChainId = Number(getEnvConfigValue('KYOTO_CHAIN_ID'))
@@ -23,6 +25,52 @@ export const useNetworkConfig = () => {
       },
     }),
     [bscChainId, bscExplorerUrl, bscRpc, kyotoChainId, kyotoExplorerUrl, kyotoRpc],
+  )
+
+  return result
+}
+
+export const useFullChainConfig = () => {
+  const { kyoto, bsc } = useNetworkConfig()
+
+  const kyotoChain = useMemo(
+    () => ({
+      id: kyoto.chainId,
+      chainId: kyoto.chainId,
+      name: 'Kyoto',
+      nativeCurrency: { name: 'KYOTO', symbol: 'KYOT', decimals: 18 },
+      rpcUrls: {
+        default: { http: [kyoto.rpc] },
+      },
+      blockExplorers: {
+        default: { name: 'KYOTO', url: kyoto.explorerUrl },
+      },
+    }),
+    [kyoto],
+  )
+
+  const bscChain: Chain = useMemo(
+    () => ({
+      ...bscProvider,
+      id: bsc.chainId,
+      chainId: bsc.chainId,
+      rpcUrls: {
+        default: { http: [bsc.rpc] },
+      },
+      blockExplorers: {
+        default: { name: 'Polygon', url: bsc.explorerUrl },
+      },
+    }),
+    [bsc.chainId, bsc.explorerUrl, bsc.rpc],
+  )
+
+  const result = useMemo(
+    () => ({
+      kyotoChain,
+      bscChain,
+      allChains: [kyotoChain, bscChain],
+    }),
+    [kyotoChain, bscChain],
   )
 
   return result

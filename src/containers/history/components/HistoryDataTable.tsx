@@ -47,7 +47,11 @@ export const valueStyler = (credentialsData: HistoryItem) => {
 
 export const txHashStyler = (credentialsData: HistoryItem) => {
   const { transactionHash } = credentialsData
-  return <TxLink chain="kyoto">{transactionHash}</TxLink>
+  return (
+    <TxLink chain="kyoto" txHash={transactionHash}>
+      {transactionHash}
+    </TxLink>
+  )
 }
 
 const credentialsColumns: ColumnDef<HistoryItem>[] = [

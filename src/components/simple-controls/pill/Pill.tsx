@@ -1,21 +1,21 @@
 import classNames from 'classnames'
-import { ReactElement } from 'react'
+import { ReactNode } from 'react'
 
 type PillVariant = 'primary'
 
 interface PillProps {
   variant: PillVariant
-  children: ReactElement
+  children: ReactNode
   uppercase?: boolean
 }
 
 export const Pill = ({ variant, children, uppercase }: PillProps) => {
   const variantClasses: Record<PillVariant, string> = {
-    primary: 'bg-primary-400 text-secondary-950',
+    primary: 'bg-primary-400 text-secondary-950 border-secondary-950 border-solid border',
   }
   const classes = classNames(
     variantClasses[variant],
-    'py-1 px-10 flex items-center rounded-full font-semibold',
+    'py-1 px-10 flex items-center justify-center rounded-full font-semibold',
     uppercase && 'uppercase',
   )
   return <div className={classes}>{children}</div>
