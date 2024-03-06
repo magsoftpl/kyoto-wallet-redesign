@@ -14,6 +14,15 @@ interface VestingResponseItemRow {
   transactionHash: string
 }
 
+export interface VestingRow {
+  address: string
+  amount: bigint
+  blockNumber: number
+  blockTimestamp: number
+  transactionHash: string
+  vestingId: bigint
+}
+
 export const useVestingData = ({ address }: { address: string | undefined }) => {
   const { data, refetch } = useQuery<HistoryResponse>(vestingData(address!), { skip: !address })
 
@@ -21,7 +30,17 @@ export const useVestingData = ({ address }: { address: string | undefined }) => 
     if (!data) {
       return []
     }
-    return data.vestingScheduleCreateds
+    return data.vestingScheduleCreateds.map(
+      (vsc) =>
+        ({
+          address: vsc.address,
+          amount: BigInt(vsc.amount),
+          blockNumber: Number(vsc.blockNumber),
+          blockTimestamp: Number(vsc.blockTimestamp),
+          transactionHash: vsc.transactionHash,
+          vestingId: BigInt(vsc.vestingId),
+        } satisfies VestingRow),
+    )
   }, [data])
   return { data: result, refetch }
 }

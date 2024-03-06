@@ -9,7 +9,7 @@ import { handleOperationError } from '@/containers/errorHandling/errorHandlingAc
 
 export const useBscMigrationSourceContract = ({ owner }: { owner: Address }) => {
   const { bsc } = useNetworkConfig()
-  const address = getEnvConfigValue('BSC_KYOTO_TOKEN_ADDRESS') as Address
+  const address = getEnvConfigValue('BSC_MIGRATOR_ADDRESS') as Address
   const { ensureConnectionToNetwork } = useWriteContractPreparation()
   const migrationFee = getEnvConfigValue('BSC_MIGRATION_PROVISION_IN_WEI')
     ? BigInt(getEnvConfigValue('BSC_MIGRATION_PROVISION_IN_WEI'))
