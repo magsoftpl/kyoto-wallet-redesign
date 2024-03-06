@@ -1,9 +1,11 @@
-import { useReadContracts } from 'wagmi'
+import { useReadContracts, useWriteContract } from 'wagmi'
 import { vestingContractAbi } from '@/abis/vestingContract.abi'
 import { useNetworkConfig } from '@/containers/web3/useNetworkConfigs'
-import { useMemo } from 'react'
+import { useCallback, useMemo } from 'react'
 import { getEnvConfigValue } from '../../envConfig/envConfig'
 import { Address } from '@/types/address.type'
+import { useWriteContractPreparation } from '@/containers/web3/useWriteContractPreparation'
+import { handleOperationError } from '@/containers/errorHandling/errorHandlingActions'
 
 export interface VestingInfoRow {
   vestingId: bigint
@@ -21,6 +23,7 @@ export interface VestingRelesasbleInfoRow {
 export const useVestingContract = ({ scheduleIds }: { scheduleIds: bigint[] }) => {
   const { kyoto } = useNetworkConfig()
   const address = getEnvConfigValue('KYOTO_VESTING_ADDRESS') as Address
+  const { ensureConnectionToNetwork } = useWriteContractPreparation()
 
   const { data: vestingInfoResponse } = useReadContracts({
     contracts: scheduleIds.map((scheduleId) => ({
@@ -31,6 +34,7 @@ export const useVestingContract = ({ scheduleIds }: { scheduleIds: bigint[] }) =
       chainId: kyoto.chainId,
     })),
   })
+
   const { data: relesableResponse } = useReadContracts({
     contracts: scheduleIds.map((scheduleId) => ({
       address,
@@ -40,6 +44,9 @@ export const useVestingContract = ({ scheduleIds }: { scheduleIds: bigint[] }) =
       chainId: kyoto.chainId,
     })),
   })
+
+  const { writeContractAsync } = useWriteContract()
+
   const releasableInfo = useMemo(
     () =>
       relesableResponse?.map((rel, index) => {
@@ -51,6 +58,7 @@ export const useVestingContract = ({ scheduleIds }: { scheduleIds: bigint[] }) =
       }),
     [relesableResponse, scheduleIds],
   )
+
   const isReleasableInfoError = useMemo(
     () => relesableResponse?.some((rel) => rel.status === 'failure'),
     [relesableResponse],
@@ -75,14 +83,35 @@ export const useVestingContract = ({ scheduleIds }: { scheduleIds: bigint[] }) =
     [vestingInfoResponse],
   )
 
+  const release = useCallback(
+    async (vestingId: bigint) => {
+      try {
+        await ensureConnectionToNetwork(kyoto.chainId)
+        const result = await writeContractAsync({
+          abi: vestingContractAbi,
+          functionName: 'release',
+          args: [vestingId],
+          chainId: kyoto.chainId,
+          address,
+        })
+        return result
+      } catch (err) {
+        handleOperationError('Error when releasing tokens from vesting contract', err)
+        return undefined
+      }
+    },
+    [address, ensureConnectionToNetwork, kyoto.chainId, writeContractAsync],
+  )
+
   const result = useMemo(
     () => ({
       vestingInfo,
       isVestingInfoError,
       releasableInfo,
       isReleasableInfoError,
+      release,
     }),
-    [isReleasableInfoError, isVestingInfoError, releasableInfo, vestingInfo],
+    [isReleasableInfoError, isVestingInfoError, releasableInfo, release, vestingInfo],
   )
   return result
 }

@@ -17,7 +17,9 @@ export const Staking = () => {
   const { address, isConnectedToProperWallet } = useCurrentWalletInfo()
   const { balance: balanceToMigrate, migrate } = useBscMigrationSourceContract({ owner: address! })
   const { data: vestingData, refetch: refetchVestingData } = useVestingData({ address })
-  const { vestingInfo, releasableInfo } = useVestingContract({ scheduleIds: vestingData.map((vs) => vs.vestingId) })
+  const { vestingInfo, releasableInfo, release } = useVestingContract({
+    scheduleIds: vestingData.map((vs) => vs.vestingId),
+  })
 
   const [txHash, setTxHash] = useState<Address>()
 
@@ -37,6 +39,11 @@ export const Staking = () => {
     setTxHash(hash)
   }
 
+  const handleReleaseVesting = async (vestingId: bigint) => {
+    const hash = await release(vestingId)
+    setTxHash(hash)
+  }
+
   return (
     <>
       <TransactionProgressModal txHash={txHash} chain="bsc" />
@@ -53,7 +60,11 @@ export const Staking = () => {
         >
           <div className="w-full flex flex-col gap-2">
             {vestingInfo && releasableInfo && (
-              <MigrationsTable vestingInfoData={vestingInfo} releasableData={releasableInfo} />
+              <MigrationsTable
+                vestingInfoData={vestingInfo}
+                releasableData={releasableInfo}
+                onClaimClick={handleReleaseVesting}
+              />
             )}
             {!!balanceToMigrate && (
               <PendingMigration

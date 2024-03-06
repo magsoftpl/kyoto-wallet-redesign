@@ -1,13 +1,18 @@
 import { EthValueFormatter } from '@/components/formatters/EthValueFormatter'
 import { VestingInfoRow, VestingRelesasbleInfoRow } from '../dataSources/vestingContract'
 import { Button } from '@/components/simple-controls/button/Button'
+import Image from 'next/image'
 
 interface MigrationsTableProps {
   vestingInfoData: VestingInfoRow[]
   releasableData: VestingRelesasbleInfoRow[]
+  onClaimClick(vestingId: bigint): void
 }
 
-export const MigrationsTable = ({ vestingInfoData, releasableData }: MigrationsTableProps) => {
+export const MigrationsTable = ({ vestingInfoData, releasableData, onClaimClick }: MigrationsTableProps) => {
+  const getReleasableAmount = (vestingId: bigint, index: number) => {
+    return releasableData[index].vestingId === vestingId ? releasableData[index].amount : null
+  }
   return (
     <div role="table" className="w-full flex flex-col gap-2 uppercase">
       {vestingInfoData.map((migrationRow, index) => (
@@ -16,7 +21,11 @@ export const MigrationsTable = ({ vestingInfoData, releasableData }: MigrationsT
             <div className="w-full flex flex-col md:flex-row items-start">
               <div role="cell" className="basis-1/3 flex flex-col items-start md:items-center">
                 <div className="font-semibold">Migrated tokens</div>
-                <EthValueFormatter valueWei={migrationRow.totalAmount} currency="KYOTO" />
+                <div className="flex gap-1 items-center">
+                  <EthValueFormatter valueWei={migrationRow.totalAmount} />
+                  <Image src="/icons/bsc.png" className="w-4 h-4" width={16} height={16} alt="Bsc logo" />
+                  KYOTO
+                </div>
               </div>
               <div role="cell" className="basis-1/3 flex flex-col items-start md:items-center">
                 <div className="font-semibold">Locked</div>
@@ -27,14 +36,18 @@ export const MigrationsTable = ({ vestingInfoData, releasableData }: MigrationsT
               </div>
               <div role="cell" className="basis-1/3 flex flex-col items-start md:items-center">
                 <div className="font-semibold">Unlocked</div>
-                <EthValueFormatter valueWei={releasableData[index].amount} currency="KYOTO" />
+                <EthValueFormatter valueWei={getReleasableAmount(migrationRow.vestingId, index)} currency="KYOTO" />
               </div>
             </div>
-            <div className="flex justify-center gap-6">
-              <div>
-                <Button variant="primary">Claim</Button>
+            <div className="flex justify-center items-center gap-6">
+              <div className="lg:min-w-[9rem]">
+                {!!getReleasableAmount(migrationRow.vestingId, index) && (
+                  <Button variant="primary" onClick={() => onClaimClick(migrationRow.vestingId)}>
+                    Claim
+                  </Button>
+                )}
               </div>
-              <div>
+              <div className="lg:min-w-[9rem]">
                 <Button variant="primary">Stake</Button>
               </div>
             </div>
