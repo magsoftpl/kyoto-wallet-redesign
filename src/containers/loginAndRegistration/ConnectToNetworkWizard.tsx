@@ -4,7 +4,7 @@ import { ModalLoginWizardMethodSelect } from './components/Wizards/ModalLoginWiz
 import { ModalLoginWizardWallet } from './components/Wizards/ModalLoginWizardWallet'
 import { ModalWalletAlreadyAssignedWarning } from './components/Wizards/ModalWalletAlreadyAssignedWarning'
 import { useConnectToNetworkWizardLogic } from './logic/useConnectToNetworkWizardLogic'
-import useLoginStateData from './store/loginData.slice'
+import useLoginStateData from './dataSources/loginData.slice'
 
 export const ConnectToNetworkWizard = () => {
   const navigate = useNavigator()

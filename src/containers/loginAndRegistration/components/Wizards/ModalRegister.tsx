@@ -6,7 +6,7 @@ import { EnterEmailVerificationCode } from './EnterEmailVerificationCode'
 import { Init2Fa } from './Init2Fa'
 import { Enter2FaCode } from './Enter2FaCode'
 import { FinishRegistration } from './FinishRegistration'
-import { RegistrationWizardData } from '../../store/loginData.slice'
+import { RegistrationWizardData } from '../../dataSources/loginData.slice'
 import {
   FinishRegistrationProcessPayload,
   InitRegistrationProcessPayload,

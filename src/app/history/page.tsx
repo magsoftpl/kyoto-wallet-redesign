@@ -4,12 +4,14 @@ import { NavigationToolbar } from '@/containers/navigationToolbar/NavigationTool
 import { UserInfoHeader } from '@/containers/userInfoHeader/UserInfoHeader'
 import { AuthorizedLayout } from '@/layouts/authorized/AuthorizedLayout'
 import { History } from '@/containers/history/History'
+import { ErrorToasts } from '@/containers/errorHandling/ErrorToasts'
 
 const HistoryPage = () => {
   return (
     <AuthGuard redirectTarget="/login" sessionRestriction="required">
       <AuthorizedLayout header={<UserInfoHeader />} toolbar={<NavigationToolbar />} footer={<Footer />}>
         <History />
+        <ErrorToasts />
       </AuthorizedLayout>
     </AuthGuard>
   )

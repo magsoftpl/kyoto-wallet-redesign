@@ -1,5 +1,5 @@
 import { useCallback, useMemo } from 'react'
-import useLoginStateData from '../store/loginData.slice'
+import useLoginStateData from '../dataSources/loginData.slice'
 import { getApiClient } from '@/containers/authentication/authClient'
 import { SessionDataResponse } from '@/types/api.type'
 import { useSession } from '@/containers/authentication/useSession'

@@ -1,5 +1,5 @@
 import { useCallback, useMemo } from 'react'
-import useLoginStateData, { WalletProvider } from '../store/loginData.slice'
+import useLoginStateData, { WalletProvider } from '../dataSources/loginData.slice'
 import { getApiClient } from '@/containers/authentication/authClient'
 import { handleOperationError } from '@/containers/errorHandling/errorHandlingActions'
 import { useCurrentUserDisplayData } from '@/containers/authentication/useCurrentUserDisplayData'

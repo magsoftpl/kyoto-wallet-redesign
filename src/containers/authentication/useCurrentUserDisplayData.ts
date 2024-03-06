@@ -1,5 +1,5 @@
 import { useCallback, useMemo } from 'react'
-import useCurrentUserSlice from './store/currentUser.slice'
+import useCurrentUserSlice from './dataSources/currentUser.slice'
 
 export const useCurrentUserDisplayData = () => {
   const { currentUser, setCurrentUser } = useCurrentUserSlice()

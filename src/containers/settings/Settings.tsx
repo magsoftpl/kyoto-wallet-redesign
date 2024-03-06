@@ -1,14 +1,14 @@
 'use client'
 
 import { useEffect } from 'react'
-import useCurrentUserData from '../authentication/store/currentUser.slice'
+import useCurrentUserData from '../authentication/dataSources/currentUser.slice'
 import { SettingResetPasswordWizard } from '../loginAndRegistration/SettingResetPasswordWizard'
 import { useSettingsResetPasswordLogic } from '../loginAndRegistration/logic/useSettingsResetPasswordLogic'
 import { EmailSettingsRow } from './components/EmailSettingsRow'
 import { Reset2FaSettingsRow } from './components/Reset2FaSettingsRow'
 import { ResetPasswordSettingsRow } from './components/ResetPasswordSettingsRow'
 import { useSettingsLogic } from './logic/useSettingsLogic'
-import useSettingsData from './store/settings.slice'
+import useSettingsData from './dataSources/settings.slice'
 
 export const Settings = () => {
   const { currentUser } = useCurrentUserData()

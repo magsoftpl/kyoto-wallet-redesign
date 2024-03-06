@@ -3,7 +3,7 @@
 import { ModalLoginWizardMethodSelect } from './components/Wizards/ModalLoginWizardMethodSelect'
 import { ModalLoginWizardWallet } from './components/Wizards/ModalLoginWizardWallet'
 import { ModalLoginWizardEmailPassword } from './components/Wizards/ModalLoginWizardEmailPassword'
-import useLoginStateData from './store/loginData.slice'
+import useLoginStateData from './dataSources/loginData.slice'
 import { useLoginWizardLogic } from './logic/useLoginWizardLogic'
 import { useNavigator } from '../navigation/useNavigator'
 

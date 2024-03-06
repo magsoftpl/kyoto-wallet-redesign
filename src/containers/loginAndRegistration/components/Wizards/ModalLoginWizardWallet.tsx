@@ -3,7 +3,7 @@ import { ConnectWallet } from './ConnectWallet'
 import { VerifyWallet } from './VerifyWallet'
 import { useEffect, useState } from 'react'
 import { Button } from '@/components/simple-controls/button/Button'
-import { WalletProvider } from '../../store/loginData.slice'
+import { WalletProvider } from '../../dataSources/loginData.slice'
 import { useConnect, useAccount, useSignMessage, useChainId } from 'wagmi'
 import { useNetworkConfig } from '@/containers/web3/useNetworkConfigs'
 
@@ -107,9 +107,8 @@ export const ModalLoginWizardWallet = ({
             disabled={!isConnectActive || isConnectionPending || isSigningPending || !isCorrectNetwork}
             onClick={handleConnect}
           >
-            Connect
+            {!isConnected ? 'Connect' : 'Verify'}
           </Button>
-          <div className="text-inactive-600 min-h-[1.6em]">{isConnected && 'Skip and view profile'}</div>
         </div>
       </div>
     </Modal>

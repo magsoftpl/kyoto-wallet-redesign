@@ -1,7 +1,7 @@
 'use client'
 import { LoginTop } from './components/LoginTop'
 import { LoginWizard } from './LoginWizard'
-import useLoginStateData from './store/loginData.slice'
+import useLoginStateData from './dataSources/loginData.slice'
 import { useLoginWizardLogic } from './logic/useLoginWizardLogic'
 import { ResetPasswordWizard } from './ResetPasswordWizard'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'

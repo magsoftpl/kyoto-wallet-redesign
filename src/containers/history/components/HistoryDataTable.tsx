@@ -1,5 +1,5 @@
 import { ColumnDef, getCoreRowModel, useReactTable } from '@tanstack/react-table'
-import { HistoryItem } from '../store/useHistoryData'
+import { HistoryItem } from '../dataSources/useHistoryData'
 import { DataTable } from '@/components/complex-controls/DataTable'
 import { formatBlockTimestampAsDate } from '@/components/formatters/BlockTimestampAsDateFormatter'
 import { TxLink } from '@/containers/web3/TxLink'

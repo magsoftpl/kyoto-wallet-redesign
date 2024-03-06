@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronRight } from '@fortawesome/free-solid-svg-icons'
 import Image from 'next/image'
 import { Modal } from '@/components/complex-controls/Modal'
-import { WalletProvider } from '../../store/loginData.slice'
+import { WalletProvider } from '../../dataSources/loginData.slice'
 
 interface ModalLoginWizardMethodSelectProps {
   walletsOnly?: boolean

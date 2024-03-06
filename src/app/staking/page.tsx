@@ -1,4 +1,5 @@
 import { AuthGuard } from '@/containers/authentication/authGuard'
+import { ErrorToasts } from '@/containers/errorHandling/ErrorToasts'
 import { Footer } from '@/containers/footer/Footer'
 import { NavigationToolbar } from '@/containers/navigationToolbar/NavigationToolbar'
 import { Staking } from '@/containers/staking/Staking'
@@ -10,6 +11,7 @@ const StakingPage = () => {
     <AuthGuard redirectTarget="/login" sessionRestriction="required">
       <AuthorizedLayout header={<UserInfoHeader />} toolbar={<NavigationToolbar />} footer={<Footer />}>
         <Staking />
+        <ErrorToasts />
       </AuthorizedLayout>
     </AuthGuard>
   )

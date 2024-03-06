@@ -1,6 +1,6 @@
 import { Modal } from '@/components/complex-controls/Modal'
 import { ChangePassword } from './ChangePassword'
-import { SettingsResetPasswordWizardStep } from '../../store/loginData.slice'
+import { SettingsResetPasswordWizardStep } from '../../dataSources/loginData.slice'
 import { Button } from '@/components/simple-controls/button/Button'
 import { DotTabs } from '@/components/complex-controls/DotTabs'
 import { useMemo } from 'react'

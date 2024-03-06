@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 import { useAccount } from 'wagmi'
 
-import useCurrentUserData from '@/containers/authentication/store/currentUser.slice'
+import useCurrentUserData from '@/containers/authentication/dataSources/currentUser.slice'
 import { Address } from '@/types/address.type'
 
 export const useCurrentWalletInfo = () => {

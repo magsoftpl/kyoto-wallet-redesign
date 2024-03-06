@@ -1,5 +1,5 @@
 import { handleOperationError } from '@/containers/errorHandling/errorHandlingActions'
-import useSettingsData from '../store/settings.slice'
+import useSettingsData from '../dataSources/settings.slice'
 import { getApiClient } from '@/containers/authentication/authClient'
 import { useCallback, useMemo } from 'react'
 

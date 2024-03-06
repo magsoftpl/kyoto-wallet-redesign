@@ -2,7 +2,7 @@ import { Modal } from '@/components/complex-controls/Modal'
 import { EnterEmailPassword } from './EnterEmailPassword'
 import { ForgotPassword } from './ForgotPassword'
 import { Enter2FaCode } from './Enter2FaCode'
-import { EmailLoginOperationStep } from '../../store/loginData.slice'
+import { EmailLoginOperationStep } from '../../dataSources/loginData.slice'
 
 interface ModalLoginWizardEmailPasswordProps {
   step: EmailLoginOperationStep

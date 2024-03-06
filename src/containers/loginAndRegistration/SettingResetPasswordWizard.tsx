@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { ModalSettingsResetPassword } from './components/Wizards/ModalSettingsResetPassword'
 import { useSettingsResetPasswordLogic } from './logic/useSettingsResetPasswordLogic'
-import useLoginStateData from './store/loginData.slice'
+import useLoginStateData from './dataSources/loginData.slice'
 
 export const SettingResetPasswordWizard = ({ onClose }: { onClose(): void }) => {
   const { settingsResetPasswordWizard } = useLoginStateData()

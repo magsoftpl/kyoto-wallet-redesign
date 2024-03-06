@@ -3,10 +3,10 @@ import { Panel } from '@/components/complex-controls/Panel'
 import { Pill } from '@/components/simple-controls/pill/Pill'
 import { useStakingMigrationLogic } from './logic/useStakingMigrationLogic'
 import { useEffect, useState } from 'react'
-import { useBscMigrationSourceContract } from './store/bscMigrationSourceContract'
+import { useBscMigrationSourceContract } from './dataSources/bscMigrationSourceContract'
 import { useCurrentWalletInfo } from '../web3/useCurrentWalletInfo'
 import { PendingMigration } from './components/PendingMigration'
-import { useVestingData } from './store/useVestingData'
+import { useVestingData } from './dataSources/useVestingData'
 import { Address } from 'viem'
 import { TransactionProgressModal } from '../web3/TransactionProgressModal'
 
@@ -42,9 +42,10 @@ export const Staking = () => {
       <div className="w-full min-h-72 py-12 md:px-4 flex flex-col justify-center gap-12">
         <Panel
           variant="primary"
+          collapsible
           title={
             <div className="w-full flex justify-between">
-              <div>Migration</div>
+              <div className="flex items-center">Migration</div>
               <Pill variant="primary">Live</Pill>
             </div>
           }

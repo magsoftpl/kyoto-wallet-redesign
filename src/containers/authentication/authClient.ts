@@ -2,7 +2,7 @@ import { createClient } from './logic/client'
 import { isRefreshNeeded, obtainNewTokens } from './logic/token'
 import { AxiosInstance } from 'axios'
 import { deleteSession, setSessionData } from './logic/session'
-import useAuthData from './store/authData.slice'
+import useAuthData from './dataSources/authData.slice'
 import { logError } from '../maintenanceLogs/maintenanceLog'
 
 export const getApiClient = prepareApiClientFn()

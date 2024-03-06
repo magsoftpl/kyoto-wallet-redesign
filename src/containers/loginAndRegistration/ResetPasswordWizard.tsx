@@ -1,6 +1,6 @@
 'use client'
 
-import useLoginStateData from './store/loginData.slice'
+import useLoginStateData from './dataSources/loginData.slice'
 import { useLoginWizardLogic } from './logic/useLoginWizardLogic'
 import { ModalResetPassword } from './components/Wizards/ModalResetPassword'
 import { useResetPasswordWizardLogic } from './logic/useResetPasswordWizardLogic'

@@ -1,6 +1,6 @@
 'use client'
 
-import { useHistoryData } from './store/useHistoryData'
+import { useHistoryData } from './dataSources/useHistoryData'
 import { useCurrentWalletInfo } from '../web3/useCurrentWalletInfo'
 import { HistoryDataTable } from './components/HistoryDataTable'
 import { useEffect } from 'react'
