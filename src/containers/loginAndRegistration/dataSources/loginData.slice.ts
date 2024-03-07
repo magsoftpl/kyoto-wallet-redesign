@@ -65,6 +65,15 @@ interface SettingsResetPasswordWizardData {
   errorCode: string | null
 }
 
+export interface SettingsReset2FaWizardData {
+  registrationId: string
+  step: number
+  maxStep: number
+  errorCode: string | null
+  email: string
+  twoFaUrl: string
+}
+
 interface LoginState {
   loginWizard: LoginWizardData | null
   setLoginWizard(data: LoginWizardData | null): void
@@ -76,6 +85,8 @@ interface LoginState {
   setConnectToNetworkWizard(data: ConnectToNetworkWizardData | null): void
   settingsResetPasswordWizard: SettingsResetPasswordWizardData | null
   setSettingsResetPasswordWizard(data: SettingsResetPasswordWizardData | null): void
+  settingsReset2FaWizard: SettingsReset2FaWizardData | null
+  setSettingsReset2FaWizard(data: SettingsReset2FaWizardData | null): void
 }
 
 const store = (set: Function) =>
@@ -85,6 +96,7 @@ const store = (set: Function) =>
     registrationWizard: null,
     connectToNetworkWizard: null,
     settingsResetPasswordWizard: null,
+    settingsReset2FaWizard: null,
     setLoginWizard(data: LoginWizardData | null) {
       set((s: Draft<LoginState>) => {
         s.loginWizard = data
@@ -108,6 +120,11 @@ const store = (set: Function) =>
     setSettingsResetPasswordWizard(data: SettingsResetPasswordWizardData | null) {
       set((s: Draft<LoginState>) => {
         s.settingsResetPasswordWizard = data
+      })
+    },
+    setSettingsReset2FaWizard(data: SettingsReset2FaWizardData | null) {
+      set((s: Draft<LoginState>) => {
+        s.settingsReset2FaWizard = data
       })
     },
   } satisfies LoginState)

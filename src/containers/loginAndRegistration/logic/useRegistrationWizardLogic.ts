@@ -93,7 +93,7 @@ export const useRegistrationWizardLogic = () => {
       const apiClient = await getApiClient.withoutAuth()
       await apiClient.post('/register/email-resend', { id: registrationWizard.registrationId })
     } catch (err) {
-      handleOperationError('Error when setting new password', err)
+      handleOperationError('Error when resending verification email', err)
     }
   }, [registrationWizard])
 

@@ -11,7 +11,7 @@ const validationSchema = Yup.object({
 
 interface EnterEmailVerificationCodeProps {
   email: string
-  errorCode: string
+  errorCode: string | null
   onSubmit(payload: { code: string }): void
   onResend(): void
 }

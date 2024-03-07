@@ -10,7 +10,7 @@ const validationSchema = Yup.object({
 })
 
 interface Enter2FaCodeProps {
-  errorCode: string
+  errorCode: string | null
   onSubmit(payload: { code: string }): void
 }
 

@@ -6,10 +6,18 @@ interface SettingsRowProps {
   title: ReactNode
   subTitle: ReactNode
   actionText: string
+  showAction?: boolean
   onActionClick(): void
 }
 
-export const SettingsRow = ({ icon, title, subTitle, actionText, onActionClick }: SettingsRowProps) => {
+export const SettingsRow = ({
+  icon,
+  title,
+  subTitle,
+  showAction = true,
+  actionText,
+  onActionClick,
+}: SettingsRowProps) => {
   return (
     <div className="w-ful p-4 flex justify-between items-center border-inactive-100 border-solid border-b-2">
       <div className="flex gap-10 items-center uppercase">
@@ -20,9 +28,11 @@ export const SettingsRow = ({ icon, title, subTitle, actionText, onActionClick }
         </div>
       </div>
       <div className="w-48">
-        <Button variant="primary" fullWidth onClick={onActionClick}>
-          {actionText}
-        </Button>
+        {showAction && (
+          <Button variant="primary" fullWidth onClick={onActionClick}>
+            {actionText}
+          </Button>
+        )}
       </div>
     </div>
   )

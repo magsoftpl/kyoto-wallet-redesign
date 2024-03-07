@@ -12,7 +12,7 @@ import { OperationError } from './OperationError'
 
 interface Init2FaProps {
   twoFaUrl: string
-  errorCode: string
+  errorCode: string | null
   on2FaMethodSelect(email: string | null): void
 }
 

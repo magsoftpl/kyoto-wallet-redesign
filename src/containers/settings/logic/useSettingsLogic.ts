@@ -9,14 +9,12 @@ export const useSettingsLogic = () => {
     try {
       const apiClient = await getApiClient()
       const response = await apiClient.get<{
-        settings: { lastPasswordChange?: string; last2faChangeDate?: string }
+        settings: { lastPasswordChange?: string; last2faChange?: string }
       }>('/user/settings')
       const lastPasswordChange = response.data.settings.lastPasswordChange
         ? new Date(response.data.settings.lastPasswordChange)
         : null
-      const last2FaChange = response.data.settings.last2faChangeDate
-        ? new Date(response.data.settings.last2faChangeDate)
-        : null
+      const last2FaChange = response.data.settings.last2faChange ? new Date(response.data.settings.last2faChange) : null
       setSettingsData({
         lastPasswordChange,
         last2FaChange,

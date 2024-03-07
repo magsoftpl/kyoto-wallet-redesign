@@ -1,5 +1,8 @@
-export const OperationError = ({ code }: { code: string }) => {
+export const OperationError = ({ code }: { code: string | null }) => {
   const getErrorMessage = () => {
+    if (!code) {
+      return null
+    }
     switch (code) {
       case 'INVALID_OTP_CODE':
         return 'Invalid verification code'

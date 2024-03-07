@@ -9,6 +9,8 @@ import { Reset2FaSettingsRow } from './components/Reset2FaSettingsRow'
 import { ResetPasswordSettingsRow } from './components/ResetPasswordSettingsRow'
 import { useSettingsLogic } from './logic/useSettingsLogic'
 import useSettingsData from './dataSources/settings.slice'
+import { SettingsReset2FaWizard } from '../loginAndRegistration/SettingsReset2FaWizard'
+import { useSettingsReset2FaLogic } from '../loginAndRegistration/logic/useSettingsReset2FaLogic'
 
 export const Settings = () => {
   const { currentUser } = useCurrentUserData()
@@ -17,6 +19,7 @@ export const Settings = () => {
   const { loadingState, settings } = useSettingsData()
   const { loadPage, unloadPage, loadSettingsData } = useSettingsLogic()
   const { showSettingsResetPasswordWizard } = useSettingsResetPasswordLogic()
+  const { showSettingsReset2FaWizard } = useSettingsReset2FaLogic()
 
   useEffect(() => {
     loadPage()
@@ -32,14 +35,20 @@ export const Settings = () => {
   return (
     <>
       <SettingResetPasswordWizard onClose={handleRefreshSetting} />
+      <SettingsReset2FaWizard onClose={handleRefreshSetting} />
       <div className="w-full min-h-72 py-12 md:px-4 flex justify-center gap-4">
         <div className="w-full max-w-[64rem]">
           <h1 className="w-full py-8 uppercase font-semibold text-3xl text-center">Settings</h1>
           {loadingState === 'loaded' && !!settings && (
             <div className="w-full p-8 rounded-2xl overflow-y-hidden border-inactive-100 border-solid border-2">
               <EmailSettingsRow email={email} onAddEmailClick={() => {}} />
-              <Reset2FaSettingsRow last2FaChange={settings.last2FaChange} onReset2FaClick={() => {}} />
+              <Reset2FaSettingsRow
+                email={email}
+                last2FaChange={settings.last2FaChange}
+                onReset2FaClick={() => showSettingsReset2FaWizard(email!)}
+              />
               <ResetPasswordSettingsRow
+                email={email}
                 lastPasswordChange={settings.lastPasswordChange}
                 onResetPasswordClick={showSettingsResetPasswordWizard}
               />
