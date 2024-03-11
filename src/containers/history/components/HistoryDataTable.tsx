@@ -12,23 +12,28 @@ export const dateStyler = (credentialsData: HistoryItem) => {
 }
 
 export const actionStyler = (credentialsData: HistoryItem) => {
-  const { action, scheme } = credentialsData
+  const { action } = credentialsData
   let actionText: string = ''
   let actionDetails: string | null = null
   switch (action) {
     case 'stake': {
       actionText = 'Staked'
-      actionDetails = formatStake(scheme)
+      actionDetails = formatStake()
       break
     }
     case 'unstake': {
       actionText = 'Unstaked'
-      actionDetails = formatStake(scheme)
+      actionDetails = formatStake()
       break
     }
     case 'reward-claim': {
       actionText = 'Claimed rewards'
-      actionDetails = formatStake(scheme, { lockSuffix: true })
+      actionDetails = formatStake({ lockSuffix: true })
+      break
+    }
+    case 'release': {
+      actionText = 'Claimed rewards'
+      actionDetails = 'Migration'
       break
     }
   }

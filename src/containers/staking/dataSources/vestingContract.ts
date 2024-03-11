@@ -4,8 +4,6 @@ import { useNetworkConfig } from '@/containers/web3/useNetworkConfigs'
 import { useCallback, useMemo } from 'react'
 import { getEnvConfigValue } from '../../envConfig/envConfig'
 import { Address } from '@/types/address.type'
-import { useWriteContractPreparation } from '@/containers/web3/useWriteContractPreparation'
-import { handleOperationError } from '@/containers/errorHandling/errorHandlingActions'
 
 export interface VestingInfoRow {
   vestingId: bigint
@@ -23,9 +21,9 @@ export interface VestingRelesasbleInfoRow {
 export const useVestingContract = ({ scheduleIds }: { scheduleIds: bigint[] }) => {
   const { kyoto } = useNetworkConfig()
   const address = getEnvConfigValue('KYOTO_VESTING_ADDRESS') as Address
-  const { ensureConnectionToNetwork } = useWriteContractPreparation()
+  const stakingPoolAddress = getEnvConfigValue('KYOTO_STAKING_ADDRESS') as Address
 
-  const { data: vestingInfoResponse } = useReadContracts({
+  const { data: vestingInfoResponse, refetch: refetchVestingInfo } = useReadContracts({
     contracts: scheduleIds.map((scheduleId) => ({
       address,
       abi: vestingContractAbi,
@@ -85,23 +83,31 @@ export const useVestingContract = ({ scheduleIds }: { scheduleIds: bigint[] }) =
 
   const release = useCallback(
     async (vestingId: bigint) => {
-      try {
-        await ensureConnectionToNetwork(kyoto.chainId)
-        const result = await writeContractAsync({
-          abi: vestingContractAbi,
-          functionName: 'release',
-          args: [vestingId],
-          chainId: kyoto.chainId,
-          address,
-        })
-        return result
-      } catch (err) {
-        handleOperationError('Error when releasing tokens from vesting contract', err)
-        return undefined
-      }
+      const result = await writeContractAsync({
+        abi: vestingContractAbi,
+        functionName: 'release',
+        args: [vestingId],
+        chainId: kyoto.chainId,
+        address,
+      })
+      return result
     },
-    [address, ensureConnectionToNetwork, kyoto.chainId, writeContractAsync],
+    [address, kyoto.chainId, writeContractAsync],
   )
+
+  // const stake = useCallback(
+  //   async (vestingId: bigint, amount: bigint) => {
+  //     const result = await writeContractAsync({
+  //       abi: vestingContractAbi,
+  //       functionName: 'stake',
+  //       args: [vestingId, amount, stakingPoolAddress],
+  //       chainId: kyoto.chainId,
+  //       address,
+  //     })
+  //     return result
+  //   },
+  //   [address, kyoto.chainId, stakingPoolAddress, writeContractAsync],
+  // )
 
   const result = useMemo(
     () => ({
@@ -110,8 +116,10 @@ export const useVestingContract = ({ scheduleIds }: { scheduleIds: bigint[] }) =
       releasableInfo,
       isReleasableInfoError,
       release,
+      // stake,
+      refetchVestingInfo,
     }),
-    [isReleasableInfoError, isVestingInfoError, releasableInfo, release, vestingInfo],
+    [isReleasableInfoError, isVestingInfoError, refetchVestingInfo, releasableInfo, release, vestingInfo],
   )
   return result
 }

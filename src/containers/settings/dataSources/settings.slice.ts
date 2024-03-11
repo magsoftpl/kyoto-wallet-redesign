@@ -31,5 +31,5 @@ const store = (set: Function) =>
     },
   } satisfies SettingsState)
 
-const useCurrentUserData = create<SettingsState>()(immer<SettingsState>(store))
-export default useCurrentUserData
+const useSettings = create<SettingsState>()(immer<SettingsState>(store))
+export default useSettings

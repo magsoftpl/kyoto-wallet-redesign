@@ -16,9 +16,14 @@ interface PanelProps {
 export const Panel = ({ children, title, variant = 'default', collapsible }: PanelProps) => {
   const [isCollapsed, setIsCollapsed] = useState(false)
 
+  const mainClassMapping: Record<PanelVariant, string> = {
+    default: isCollapsed ? 'border-secondary-950' : 'border-inactive-100',
+    primary: isCollapsed ? 'border-primary-400' : 'border-inactive-100',
+  }
+
   const mainClass = classNames(
     'w-full max-w-[100rem] rounded-2xl overflow-y-hidden border-solid border-2',
-    isCollapsed ? 'border-primary-400' : 'border-inactive-100',
+    mainClassMapping[variant],
   )
 
   const titleClassMapping: Record<PanelVariant, string> = {

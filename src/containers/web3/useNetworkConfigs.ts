@@ -58,7 +58,7 @@ export const useFullChainConfig = () => {
         default: { http: [bsc.rpc] },
       },
       blockExplorers: {
-        default: { name: 'Polygon', url: bsc.explorerUrl },
+        default: { name: 'BSC', url: bsc.explorerUrl },
       },
     }),
     [bsc.chainId, bsc.explorerUrl, bsc.rpc],

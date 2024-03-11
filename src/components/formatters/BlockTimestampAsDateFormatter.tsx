@@ -6,18 +6,19 @@ interface FormatTimestampAsDateOptions {
 }
 
 export const formatBlockTimestampAsDate = (
-  timeStamp: number | null | undefined,
+  timeStamp: number | bigint | null | undefined,
   options?: FormatTimestampAsDateOptions,
 ) => {
   if (!timeStamp) {
     return null
   }
-  const date = new Date(timeStamp * 1000)
+  const timestampNumber = typeof timeStamp === 'bigint' ? Number(timeStamp) : timeStamp
+  const date = new Date(timestampNumber * 1000)
   return format(date, options?.datePattern || 'Pp')
 }
 
 interface BlockTimestampAsDateFormatterProps extends FormatTimestampAsDateOptions {
-  children: number
+  children: number | bigint
 }
 
 export const BlockTimestampAsDateFormatter = ({ children, ...options }: BlockTimestampAsDateFormatterProps) => {

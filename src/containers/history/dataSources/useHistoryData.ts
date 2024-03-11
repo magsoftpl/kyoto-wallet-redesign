@@ -2,20 +2,27 @@ import { useQuery } from '@apollo/client'
 import { history } from './queries'
 import { useMemo } from 'react'
 
-export type HistoryResponse = Record<string, HistoryResponseItemRow[]>
+type HistoryResponseKey =
+  | 'stakingPoolStakeds'
+  | 'stakingPoolUnstakeds'
+  | 'stakingPoolRewardsClaimeds'
+  | 'kyotoVestingReleaseds'
+
+export type HistoryResponse = Record<HistoryResponseKey, HistoryResponseItemRow[]>
 
 interface HistoryResponseItemRow {
-  __typename: string
+  __typename: HistoryResponseKey
   scheme: number
-  amount?: string
+  stakedAmount?: string
+  unstakedAmount?: string
   rewards?: string
+  releasedAmount?: string
   transactionHash: string
   blockTimestamp: string
 }
 
 export interface HistoryItem {
-  action: 'stake' | 'unstake' | 'reward-claim'
-  scheme: number
+  action: 'stake' | 'unstake' | 'reward-claim' | 'release'
   amount: bigint
   transactionHash: string
   blockTimestamp: number
@@ -34,10 +41,9 @@ export const useHistoryData = ({ address }: { address: string | undefined }) => 
       }
       return staked.map((res) => ({
         action: 'stake',
-        scheme: res.scheme,
         blockTimestamp: Number(res.blockTimestamp),
         transactionHash: res.transactionHash,
-        amount: BigInt(res.amount!),
+        amount: BigInt(res.stakedAmount!),
       }))
     }
     const parseUnstaked = (staked: HistoryResponseItemRow[] | undefined): HistoryItem[] => {
@@ -49,7 +55,7 @@ export const useHistoryData = ({ address }: { address: string | undefined }) => 
         scheme: res.scheme,
         blockTimestamp: Number(res.blockTimestamp),
         transactionHash: res.transactionHash,
-        amount: BigInt(res.amount!),
+        amount: BigInt(res.unstakedAmount!),
       }))
     }
     const parseClaimed = (staked: HistoryResponseItemRow[] | undefined): HistoryItem[] => {
@@ -64,11 +70,24 @@ export const useHistoryData = ({ address }: { address: string | undefined }) => 
         amount: BigInt(res.rewards!),
       }))
     }
+    const parseMigration = (staked: HistoryResponseItemRow[] | undefined): HistoryItem[] => {
+      if (!staked) {
+        return []
+      }
+      return staked.map((res) => ({
+        action: 'release',
+        scheme: undefined,
+        blockTimestamp: Number(res.blockTimestamp),
+        transactionHash: res.transactionHash,
+        amount: BigInt(res.releasedAmount!),
+      }))
+    }
     const res = [
-      ...parseStaked(data.stakeds),
-      ...parseUnstaked(data.unstakeds),
-      ...parseClaimed(data.rewardsClaimeds),
-    ].sort((res) => res.blockTimestamp)
+      ...parseStaked(data.stakingPoolStakeds),
+      ...parseUnstaked(data.stakingPoolUnstakeds),
+      ...parseClaimed(data.stakingPoolRewardsClaimeds),
+      ...parseMigration(data.kyotoVestingReleaseds),
+    ].sort((a, b) => b.blockTimestamp - a.blockTimestamp)
     return res
   }, [data])
   return { data: result, refetch }

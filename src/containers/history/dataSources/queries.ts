@@ -1,22 +1,24 @@
 import { gql } from '@apollo/client'
 
-export const history = (addy: string) => gql`{
-    stakeds( where: { user_contains: "${addy}" } orderBy: blockTimestamp orderDirection: desc) {
-      scheme
-      amount
+export const history = (address: string) => gql`{
+    stakingPoolStakeds( where: { staker: "${address}" } orderBy: blockTimestamp orderDirection: desc) {
+      stakedAmount
       transactionHash
       blockTimestamp
     }
-    unstakeds( where: { user_contains: "${addy}" } orderBy: blockTimestamp orderDirection: desc ) {
-      scheme
-      amount
+    stakingPoolUnstakeds( where: { staker: "${address}" } orderBy: blockTimestamp orderDirection: desc ) {
+      unstakedAmount
       transactionHash
       blockTimestamp
     }
-    rewardsClaimeds( where: { user_contains: "${addy}" } orderBy: blockTimestamp orderDirection: desc ) {
-      scheme
+    stakingPoolRewardsClaimeds( where: { staker: "${address}" } orderBy: blockTimestamp orderDirection: desc ) {
       rewards
+      blockTimestamp
       transactionHash
-      blockTimestamp    
     }
+    kyotoVestingReleaseds( where: { beneficiary: "${address}" } orderBy: blockTimestamp orderDirection: desc ) {
+      releasedAmount
+      transactionHash
+      blockTimestamp
+    }    
   }`

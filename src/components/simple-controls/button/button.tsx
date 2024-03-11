@@ -1,7 +1,7 @@
 import { ButtonHTMLAttributes } from 'react'
 import classNames from 'classnames'
 
-type ButtonVariant = 'primary' | 'transparent'
+type ButtonVariant = 'primary' | 'secondary' | 'transparent'
 type ButtonLayout = 'default' | 'compact' | 'icon-only'
 
 type BaseButtonProps = Omit<ButtonHTMLAttributes<{}>, 'className' | 'style'>
@@ -21,6 +21,7 @@ export const Button = ({ variant, layout = 'default', uppercase = true, fullWidt
   }
   const variantClasses: Record<ButtonVariant, string> = {
     primary: 'bg-primary-400 text-secondary-950',
+    secondary: 'bg-secondary-950 text-white',
     transparent: '',
   }
   const classes = classNames(

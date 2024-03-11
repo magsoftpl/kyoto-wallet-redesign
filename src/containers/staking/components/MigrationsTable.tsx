@@ -7,9 +7,15 @@ interface MigrationsTableProps {
   vestingInfoData: VestingInfoRow[]
   releasableData: VestingRelesasbleInfoRow[]
   onClaimClick(vestingId: bigint): void
+  onStakeClick(vestingId: bigint): void
 }
 
-export const MigrationsTable = ({ vestingInfoData, releasableData, onClaimClick }: MigrationsTableProps) => {
+export const MigrationsTable = ({
+  vestingInfoData,
+  releasableData,
+  onClaimClick,
+  onStakeClick,
+}: MigrationsTableProps) => {
   const getReleasableAmount = (vestingId: bigint, index: number) => {
     return releasableData[index].vestingId === vestingId ? releasableData[index].amount : null
   }
@@ -35,8 +41,19 @@ export const MigrationsTable = ({ vestingInfoData, releasableData, onClaimClick 
                 />
               </div>
               <div role="cell" className="basis-1/3 flex flex-col items-start md:items-center">
-                <div className="font-semibold">Unlocked</div>
+                <div className="font-semibold">Claimable</div>
                 <EthValueFormatter valueWei={getReleasableAmount(migrationRow.vestingId, index)} currency="KYOTO" />
+              </div>
+              <div role="cell" className="basis-1/3 flex flex-col items-start md:items-center">
+                <div className="font-semibold">Unlocked</div>
+                <EthValueFormatter
+                  valueWei={
+                    getReleasableAmount(migrationRow.vestingId, index) !== null
+                      ? getReleasableAmount(migrationRow.vestingId, index)! + migrationRow.alreadyReleased
+                      : null
+                  }
+                  currency="KYOTO"
+                />
               </div>
             </div>
             <div className="flex justify-center items-center gap-6">
@@ -48,7 +65,9 @@ export const MigrationsTable = ({ vestingInfoData, releasableData, onClaimClick 
                 )}
               </div>
               <div className="lg:min-w-[9rem]">
-                <Button variant="primary">Stake</Button>
+                <Button variant="primary" onClick={() => onStakeClick(migrationRow.vestingId)}>
+                  Stake
+                </Button>
               </div>
             </div>
           </div>
