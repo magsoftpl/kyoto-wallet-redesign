@@ -3,7 +3,7 @@ import useStakingState from './dataSources/staking.slice'
 import { KyotoAddTokenParametersForm } from './components/KyotoAddTokenParametersForm'
 import { useStakingLogic } from './logic/useStakingLogic'
 import { KyotoAddTokenPreview } from './components/KyotoAddTokenPreview'
-import { formatEther, parseEther } from 'viem'
+import { parseEther } from 'viem'
 import { TransactionProgressModal } from '../web3/TransactionProgressModal'
 import { useVestingContract } from './dataSources/vestingContract'
 
@@ -30,7 +30,7 @@ export const KyotoMigrationStakingModals = () => {
         <KyotoAddTokenParametersForm
           balance={stakeMigrationPopup.walletBalance}
           poolAvailability={stakeMigrationPopup.poolAvailability}
-          minAmountEth={Number(formatEther(BigInt(1), 'wei'))}
+          minAmountEth={1}
           onClose={closeStakeVestingPopup}
           onSubmit={submitStakeVestingEthAmount}
         />

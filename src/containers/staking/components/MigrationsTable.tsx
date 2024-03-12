@@ -2,6 +2,7 @@ import { EthValueFormatter } from '@/components/formatters/EthValueFormatter'
 import { VestingInfoRow, VestingRelesasbleInfoRow } from '../dataSources/vestingContract'
 import { Button } from '@/components/simple-controls/button/Button'
 import Image from 'next/image'
+import { parseEther } from 'viem'
 
 interface MigrationsTableProps {
   vestingInfoData: VestingInfoRow[]
@@ -18,6 +19,14 @@ export const MigrationsTable = ({
 }: MigrationsTableProps) => {
   const getReleasableAmount = (vestingId: bigint, index: number) => {
     return releasableData[index].vestingId === vestingId ? releasableData[index].amount : null
+  }
+  const isSufficientEth = (vestingId: bigint, index: number, threshold: number, strict: boolean) => {
+    const amount = getReleasableAmount(vestingId, index)
+    if (amount === null) {
+      return false
+    }
+    const thresholdWei = BigInt(parseEther(String(threshold), 'wei'))
+    return strict ? amount > thresholdWei : amount >= thresholdWei
   }
   return (
     <div role="table" className="w-full flex flex-col gap-2 uppercase">
@@ -63,20 +72,20 @@ export const MigrationsTable = ({
               </div>
             </div>
             <div className="flex justify-center items-center gap-6">
-              {!!getReleasableAmount(migrationRow.vestingId, index) && (
-                <>
-                  <div className="lg:min-w-[9rem]">
-                    <Button variant="primary" onClick={() => onClaimClick(migrationRow.vestingId)}>
-                      Claim
-                    </Button>
-                  </div>
-                  <div className="lg:min-w-[9rem]">
-                    <Button variant="primary" onClick={() => onStakeClick(migrationRow.vestingId)}>
-                      Stake
-                    </Button>
-                  </div>
-                </>
-              )}
+              <div className="lg:min-w-[9rem]">
+                {isSufficientEth(migrationRow.vestingId, index, 0, true) && (
+                  <Button variant="primary" onClick={() => onClaimClick(migrationRow.vestingId)}>
+                    Claim
+                  </Button>
+                )}
+              </div>
+              <div className="lg:min-w-[9rem]">
+                {isSufficientEth(migrationRow.vestingId, index, 1, false) && (
+                  <Button variant="primary" onClick={() => onStakeClick(migrationRow.vestingId)}>
+                    Stake
+                  </Button>
+                )}
+              </div>
             </div>
           </div>
         </div>
