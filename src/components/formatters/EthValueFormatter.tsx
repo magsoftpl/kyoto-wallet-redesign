@@ -13,7 +13,9 @@ export const formatEthValue = (valueWei: bigint | null | undefined, options?: Fo
   if (options?.precision !== undefined) {
     valueEth = applyRounding(valueEth, options.precision)
   }
-  const result = options?.currency ? `${valueEth} ${options?.currency}` : valueEth
+  const formater = new Intl.NumberFormat()
+  const displayValue = formater.format(valueEth)
+  const result = options?.currency ? `${displayValue} ${options?.currency}` : displayValue
   return result
 }
 
