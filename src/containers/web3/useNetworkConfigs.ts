@@ -3,6 +3,8 @@ import { getEnvConfigValue } from '../envConfig/envConfig'
 import { bsc as bscProvider } from 'wagmi/chains'
 import { Chain } from '@rainbow-me/rainbowkit'
 
+export type WalletChain = keyof ReturnType<typeof useNetworkConfig>
+
 export const useNetworkConfig = () => {
   const kyotoChainId = Number(getEnvConfigValue('KYOTO_CHAIN_ID'))
   const kyotoRpc = getEnvConfigValue('KYOTO_RPC_URL')

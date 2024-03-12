@@ -11,10 +11,10 @@ interface KyotoAddTokenPreviewProps {
 
 export const KyotoAddTokenPreview = ({ amountEth, onClose, onAccept }: KyotoAddTokenPreviewProps) => {
   return (
-    <Modal title="Preview stake" theme="dark" show hasCloseButton onClose={onClose}>
-      <div className="w-full max-w-[25rem] p-4 pb-8 flex flex-col gap-8 justify-center uppercase text-center">
-        <div className="w-full">
-          <div className="w-full flex flex-col gap-3">
+    <Modal title={<div className="pt-4">Preview stake</div>} theme="dark" show hasCloseButton onClose={onClose}>
+      <div className="w-screen max-w-[30rem] h-[20rem] p-4 pb-8 flex flex-col gap-8 justify-center uppercase text-center">
+        <div className="w-full h-full flex flex-col justify-between">
+          <div className="w-full py-6 flex flex-col gap-3">
             <div className="flex justify-center items-center text-xl">{`${amountEth} KYOTO`}</div>
             <div className="px-8 flex justify-between items-center">
               <div>Apy</div>

@@ -1,16 +1,8 @@
 import { AddressFormatter } from '@/components/formatters/AddressFormatter'
-import { useNetworkConfig } from './useNetworkConfigs'
+import { WalletChain, useNetworkConfig } from './useNetworkConfigs'
 import { ReactNode } from 'react'
 
-export const TxLink = ({
-  children,
-  txHash,
-  chain,
-}: {
-  children: ReactNode
-  txHash: string
-  chain: keyof ReturnType<typeof useNetworkConfig>
-}) => {
+export const TxLink = ({ children, txHash, chain }: { children: ReactNode; txHash: string; chain: WalletChain }) => {
   const chains = useNetworkConfig()
   const exp = chains[chain].explorerUrl.endsWith('/') ? chains[chain].explorerUrl : `${chains[chain].explorerUrl}/`
   const link = exp + 'tx/' + txHash

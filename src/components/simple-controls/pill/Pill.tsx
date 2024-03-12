@@ -1,7 +1,7 @@
 import classNames from 'classnames'
 import { ReactNode } from 'react'
 
-type PillVariant = 'primary'
+type PillVariant = 'primary' | 'error'
 
 interface PillProps {
   variant: PillVariant
@@ -12,6 +12,7 @@ interface PillProps {
 export const Pill = ({ variant, children, uppercase }: PillProps) => {
   const variantClasses: Record<PillVariant, string> = {
     primary: 'bg-primary-400 text-secondary-950 border-secondary-950 border-solid border',
+    error: 'bg-red text-secondary-950 border-secondary-950 border-solid border',
   }
   const classes = classNames(
     variantClasses[variant],
