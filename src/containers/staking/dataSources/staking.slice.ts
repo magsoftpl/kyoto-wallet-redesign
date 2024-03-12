@@ -18,6 +18,11 @@ export interface ClaimStakePopupdata {
   rewardsAvailable: bigint
 }
 
+export interface ClaimVestingPopupdata {
+  vestingId: bigint
+  rewardsAvailable: bigint
+}
+
 interface SettingsState {
   addStakePopup: AddStakePopupdata | null
   setAddStakePopup(data: AddStakePopupdata | null): void
@@ -25,6 +30,8 @@ interface SettingsState {
   setClaimStakePopup(data: ClaimStakePopupdata | null): void
   stakeMigrationPopup: MigrationStakePopupdata | null
   setStakeMigrationPopup(data: MigrationStakePopupdata | null): void
+  claimVestingPopup: ClaimVestingPopupdata | null
+  setClaimVestingPopup(data: ClaimVestingPopupdata | null): void
 }
 
 const store = (set: Function) =>
@@ -32,6 +39,7 @@ const store = (set: Function) =>
     addStakePopup: null,
     claimStakePopup: null,
     stakeMigrationPopup: null,
+    claimVestingPopup: null,
     setAddStakePopup(data: AddStakePopupdata) {
       set((s: Draft<SettingsState>) => {
         s.addStakePopup = data
@@ -45,6 +53,11 @@ const store = (set: Function) =>
     setStakeMigrationPopup(data: MigrationStakePopupdata) {
       set((s: Draft<SettingsState>) => {
         s.stakeMigrationPopup = data
+      })
+    },
+    setClaimVestingPopup(data: ClaimVestingPopupdata | null) {
+      set((s: Draft<SettingsState>) => {
+        s.claimVestingPopup = data
       })
     },
   } satisfies SettingsState)

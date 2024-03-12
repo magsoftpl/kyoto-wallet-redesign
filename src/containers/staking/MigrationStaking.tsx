@@ -11,11 +11,11 @@ import { useStakingLogic } from './logic/useStakingLogic'
 import { useStakingContract } from './dataSources/stakingContract'
 
 export const MigrationStaking = () => {
-  const { showStakeVestingPopup } = useStakingLogic()
+  const { showStakeVestingPopup, showClaimVestingPopup } = useStakingLogic()
   const { address, isConnectedToProperWallet } = useCurrentWalletInfo()
   const { balance: balanceToMigrate, migrate } = useBscMigrationSourceContract({ owner: address! })
   const { data: vestingData, refetch: refetchVestingData } = useVestingData({ address })
-  const { vestingInfo, releasableInfo, release } = useVestingContract({
+  const { vestingInfo, releasableInfo } = useVestingContract({
     scheduleIds: vestingData.map((vs) => vs.vestingId),
   })
   const { poolCapacity } = useStakingContract({ owner: address })
@@ -34,7 +34,7 @@ export const MigrationStaking = () => {
     if (!toRelease) {
       return
     }
-    startTransaction('kyoto', () => release(vestingId, toRelease.amount))
+    showClaimVestingPopup({ rewardsAvailable: toRelease.amount, vestingId })
   }
 
   const handleStakeVesting = async (vestingId: bigint) => {

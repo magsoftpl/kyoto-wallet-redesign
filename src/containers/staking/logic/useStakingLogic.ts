@@ -5,10 +5,10 @@ export const useStakingLogic = () => {
   const {
     addStakePopup,
     setAddStakePopup,
-    claimStakePopup,
     setClaimStakePopup,
     setStakeMigrationPopup,
     stakeMigrationPopup,
+    setClaimVestingPopup,
   } = useStakingState()
 
   const showAddTokenStakePopup = useCallback(
@@ -89,6 +89,20 @@ export const useStakingLogic = () => {
     [setStakeMigrationPopup, stakeMigrationPopup],
   )
 
+  const showClaimVestingPopup = useCallback(
+    ({ rewardsAvailable, vestingId }: { rewardsAvailable: bigint; vestingId: bigint }) => {
+      setClaimVestingPopup({
+        rewardsAvailable,
+        vestingId,
+      })
+    },
+    [setClaimVestingPopup],
+  )
+
+  const closeClaimVestingPopup = useCallback(() => {
+    setClaimVestingPopup(null)
+  }, [setClaimVestingPopup])
+
   const result = useMemo(
     () => ({
       showAddTokenStakePopup,
@@ -99,6 +113,8 @@ export const useStakingLogic = () => {
       showStakeVestingPopup,
       closeStakeVestingPopup,
       submitStakeVestingEthAmount,
+      showClaimVestingPopup,
+      closeClaimVestingPopup,
     }),
     [
       closeAddTokenStakePopup,
@@ -109,6 +125,8 @@ export const useStakingLogic = () => {
       showStakeVestingPopup,
       submitAddTokensStakeEthAmount,
       submitStakeVestingEthAmount,
+      showClaimVestingPopup,
+      closeClaimVestingPopup,
     ],
   )
   return result

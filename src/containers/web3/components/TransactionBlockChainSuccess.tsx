@@ -14,7 +14,7 @@ export const TransactionBlockChainSuccess = ({ chain, txHash }: TransactionBlock
     <div className="w-full h-full p-4 pb-8 flex flex-col gap-8 justify-center uppercase text-center">
       <div className="w-full px-12">
         <div className="h-16 p-2 rounded-full border-[6px] border-solid border-primary-400">
-          <div className="h-full p-1 w-1/3 rounded-l-full bg-primary-400" />
+          <div className="h-full p-1 w-full rounded-full bg-primary-400" />
         </div>
       </div>
       <div className="min-h-[3.2em] text-primary-400">Your transaction succeded</div>
