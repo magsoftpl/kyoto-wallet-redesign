@@ -1,6 +1,7 @@
 import { useQuery } from '@apollo/client'
 import { history } from './queries'
-import { useMemo } from 'react'
+import { useCallback, useMemo } from 'react'
+import { TransactionHistoryRow, useTransactionHistoryData } from './useTransactionHistoryData'
 
 type HistoryResponseKey =
   | 'stakingPoolStakeds'
@@ -24,17 +25,27 @@ interface HistoryResponseItemRow {
 }
 
 export interface HistoryItem {
-  action: 'stake' | 'unstake' | 'reward-claim' | 'migration-create' | 'release'
+  action: 'stake' | 'unstake' | 'reward-claim' | 'migration-create' | 'release' | 'transfer-sent' | 'transfer-receive'
   amount: bigint
   transactionHash: string
   blockTimestamp: number
 }
 
 export const useHistoryData = ({ address }: { address: string | undefined }) => {
-  const { data, refetch } = useQuery<HistoryResponse>(history(address!), { skip: !address })
+  const { data: graphData, refetch: refetchGraph } = useQuery<HistoryResponse>(history(address!), { skip: !address })
+  const { data: txData, refetch: refetchTx } = useTransactionHistoryData({
+    address,
+    chain: 'kyoto',
+    enabled: !!address,
+  })
+
+  const refetch = useCallback(() => {
+    refetchGraph()
+    refetchTx()
+  }, [refetchGraph, refetchTx])
 
   const result = useMemo(() => {
-    if (!data) {
+    if (!graphData || !txData) {
       return []
     }
     const parseStaked = (staked: HistoryResponseItemRow[] | undefined): HistoryItem[] => {
@@ -96,14 +107,27 @@ export const useHistoryData = ({ address }: { address: string | undefined }) => 
         amount: BigInt(res.releasedAmount!),
       }))
     }
+    const parseTx = (tx: TransactionHistoryRow[]): HistoryItem[] => {
+      if (!tx) {
+        return []
+      }
+      return tx.map((res) => ({
+        action: res.from === address ? 'transfer-sent' : 'transfer-receive',
+        scheme: undefined,
+        blockTimestamp: Number(res.time.getTime() / 1000),
+        transactionHash: res.hash,
+        amount: BigInt(res.value),
+      }))
+    }
     const res = [
-      ...parseStaked(data.stakingPoolStakeds),
-      ...parseUnstaked(data.stakingPoolUnstakeds),
-      ...parseClaimed(data.stakingPoolRewardsClaimeds),
-      ...parseMigrationCreation(data.vestingScheduleCreateds),
-      ...parseMigrationClaim(data.kyotoVestingReleaseds),
+      ...parseStaked(graphData.stakingPoolStakeds),
+      ...parseUnstaked(graphData.stakingPoolUnstakeds),
+      ...parseClaimed(graphData.stakingPoolRewardsClaimeds),
+      ...parseMigrationCreation(graphData.vestingScheduleCreateds),
+      ...parseMigrationClaim(graphData.kyotoVestingReleaseds),
+      ...parseTx(txData),
     ].sort((a, b) => b.blockTimestamp - a.blockTimestamp)
     return res
-  }, [data])
+  }, [address, graphData, txData])
   return { data: result, refetch }
 }

@@ -41,6 +41,16 @@ export const actionStyler = (credentialsData: HistoryItem) => {
       actionDetails = 'Migration'
       break
     }
+    case 'transfer-sent': {
+      actionText = 'Transfer'
+      actionDetails = 'Sent'
+      break
+    }
+    case 'transfer-receive': {
+      actionText = 'Transfer'
+      actionDetails = 'Receive'
+      break
+    }
   }
   return (
     <div className="flex flex-col uppercase">
