@@ -182,7 +182,7 @@ export const useRegistrationWizardLogic = () => {
           })
           return
         }
-        handleOperationError('Error when submiting 2FA cede', err)
+        handleOperationError('Error when submiting 2FA code', err)
       }
     },
     [registrationWizard, setRegistrationWizard],

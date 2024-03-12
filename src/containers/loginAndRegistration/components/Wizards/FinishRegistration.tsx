@@ -22,7 +22,7 @@ interface FinishRegistrationProps {
     residencyCountry: string
     phone: string
   }
-  errorCode: string
+  errorCode: string | null
   onSubmit(payload: {
     firstName: string
     lastName: string

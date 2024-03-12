@@ -54,7 +54,7 @@ export const useSettingsReset2FaLogic = () => {
     }
     try {
       const apiClient = await getApiClient()
-      await apiClient.post('user/resend-2fa-change-email', { id: settingsReset2FaWizard.registrationId })
+      await apiClient.post('user/resend-verification-email', { id: settingsReset2FaWizard.registrationId })
     } catch (err) {
       handleOperationError('Error when resending verification email', err)
     }
@@ -142,7 +142,7 @@ export const useSettingsReset2FaLogic = () => {
           })
           return
         }
-        handleOperationError('Error when submiting 2FA cede', err)
+        handleOperationError('Error when submiting 2FA code', err)
       }
     },
     [settingsReset2FaWizard, setSettingsReset2FaWizard],

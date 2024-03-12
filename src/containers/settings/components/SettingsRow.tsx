@@ -27,7 +27,7 @@ export const SettingsRow = ({
           <div className="normal-case text-inactive-500">{subTitle}</div>
         </div>
       </div>
-      <div className="w-48">
+      <div className="w-50">
         {showAction && (
           <Button variant="primary" fullWidth onClick={onActionClick}>
             {actionText}

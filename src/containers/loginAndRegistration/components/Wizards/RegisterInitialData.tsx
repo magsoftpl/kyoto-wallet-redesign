@@ -21,12 +21,19 @@ const validationSchema = Yup.object({
 
 interface RegisterInitialDataProps {
   data: { country: string; email: string; agreeToPolicy: boolean }
-  errorCode: string
+  errorCode: string | null
+  showSwitchToLogin?: boolean
   onSubmit(payload: { email: string; country: string; password: string; agreeToPolicy: boolean }): void
   onLogin(): void
 }
 
-export const RegisterInitialData = ({ data, errorCode, onSubmit, onLogin }: RegisterInitialDataProps) => {
+export const RegisterInitialData = ({
+  data,
+  errorCode,
+  showSwitchToLogin = true,
+  onSubmit,
+  onLogin,
+}: RegisterInitialDataProps) => {
   return (
     <div className="w-full min-h-[25rem] max-w-[25rem] px-4 flex flex-col justify-between uppercase">
       <div className="w-full">
@@ -105,14 +112,16 @@ export const RegisterInitialData = ({ data, errorCode, onSubmit, onLogin }: Regi
         </Formik>
       </div>
 
-      <div className="w-full p-2 flex justify-center">
-        <div className="flex items-center gap-2">
-          Already have an account?
-          <Button variant="transparent" layout="icon-only" onClick={onLogin}>
-            <span className="text-primary-400">Login</span>
-          </Button>
+      {showSwitchToLogin && (
+        <div className="w-full p-2 flex justify-center">
+          <div className="flex items-center gap-2">
+            Already have an account?
+            <Button variant="transparent" layout="icon-only" onClick={onLogin}>
+              <span className="text-primary-400">Login</span>
+            </Button>
+          </div>
         </div>
-      </div>
+      )}
     </div>
   )
 }

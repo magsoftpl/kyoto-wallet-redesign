@@ -17,11 +17,27 @@ export const useCurrentUserDisplayData = () => {
     [currentUser, setCurrentUser],
   )
 
+  const setEmailAndName = useCallback(
+    (email: string, firstName: string, lastName: string) => {
+      if (!currentUser) {
+        return
+      }
+      setCurrentUser({
+        ...currentUser,
+        email,
+        firstName,
+        lastName,
+      })
+    },
+    [currentUser, setCurrentUser],
+  )
+
   const result = useMemo(
     () => ({
       setWallet,
+      setEmailAndName,
     }),
-    [setWallet],
+    [setEmailAndName, setWallet],
   )
   return result
 }

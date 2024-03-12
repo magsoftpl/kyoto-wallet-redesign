@@ -11,6 +11,8 @@ import { useSettingsLogic } from './logic/useSettingsLogic'
 import useSettingsData from './dataSources/settings.slice'
 import { SettingsReset2FaWizard } from '../loginAndRegistration/SettingsReset2FaWizard'
 import { useSettingsReset2FaLogic } from '../loginAndRegistration/logic/useSettingsReset2FaLogic'
+import { useSettingsAddEmailLogic } from '../loginAndRegistration/logic/useSettingsAddEmailLogic'
+import { SettingsAddEmailWizard } from '../loginAndRegistration/SettingsAddEmailWizard'
 
 export const Settings = () => {
   const { currentUser } = useCurrentUserData()
@@ -20,6 +22,7 @@ export const Settings = () => {
   const { loadPage, unloadPage, loadSettingsData } = useSettingsLogic()
   const { showSettingsResetPasswordWizard } = useSettingsResetPasswordLogic()
   const { showSettingsReset2FaWizard } = useSettingsReset2FaLogic()
+  const { showSettingsAddEmailWizard } = useSettingsAddEmailLogic()
 
   useEffect(() => {
     loadPage()
@@ -36,12 +39,17 @@ export const Settings = () => {
     <>
       <SettingResetPasswordWizard onClose={handleRefreshSetting} />
       <SettingsReset2FaWizard onClose={handleRefreshSetting} />
+      <SettingsAddEmailWizard onClose={handleRefreshSetting} />
       <div className="w-full min-h-72 py-12 md:px-4 flex justify-center gap-4">
         <div className="w-full max-w-[64rem]">
           <h1 className="w-full py-8 uppercase font-semibold text-3xl text-center">Settings</h1>
           {loadingState === 'loaded' && !!settings && (
             <div className="w-full p-8 rounded-2xl overflow-y-hidden border-inactive-100 border-solid border-2">
-              <EmailSettingsRow email={email} onAddEmailClick={() => {}} />
+              <EmailSettingsRow
+                email={email}
+                onAddEmailClick={showSettingsAddEmailWizard}
+                onChangeEmailClick={() => {}}
+              />
               <Reset2FaSettingsRow
                 email={email}
                 last2FaChange={settings.last2FaChange}
