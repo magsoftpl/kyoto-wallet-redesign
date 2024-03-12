@@ -1,8 +1,8 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faXTwitter } from '@fortawesome/free-brands-svg-icons'
-import { GitbookSvg } from '@/components/icons/GitbookSvg'
-import { ChatSvg } from '@/components/icons/ChatSvg'
-import { VoteSvg } from '@/components/icons/VoteSvg'
+import { GitbookLink } from '../externalApps/GitbookLink'
+import { VoteLink } from '../externalApps/VoteLink'
+import { ChatLink } from '../externalApps/ChatLink'
 
 export const Footer = () => {
   return (
@@ -16,27 +16,9 @@ export const Footer = () => {
         <a href="https://twitter.com/KyotoRefi" title="Twitter" target="_blank" rel="noopener">
           <FontAwesomeIcon icon={faXTwitter} className="w-5 h-4" />
         </a>
-        <a
-          href="https://kyotofoundation.gitbook.io/kyotoprotocol/introduction/introduction"
-          className="rounded-md bg-primary p-2"
-          title="Gitbook"
-          target="_blank"
-          rel="noopener"
-        >
-          <div className="text-white w-5 h-5 flex items-center">
-            <GitbookSvg />
-          </div>
-        </a>
-        <a href="#" className="rounded-md bg-primary p-2" title="Ask away" target="_blank" rel="noopener">
-          <div className="text-white w-5 h-5 flex items-center">
-            <ChatSvg />
-          </div>
-        </a>
-        <a href="#" className="rounded-md bg-primary p-2" title="Vote" target="_blank" rel="noopener">
-          <div className="text-white w-5 h-5 flex items-center">
-            <VoteSvg />
-          </div>
-        </a>
+        <GitbookLink />
+        <ChatLink />
+        <VoteLink />
       </div>
       <div className="basis-1/3 flex justify-center sm:justify-end items-center gap-2">
         BUILT BY KYOTOLABS

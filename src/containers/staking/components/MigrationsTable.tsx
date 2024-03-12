@@ -28,7 +28,7 @@ export const MigrationsTable = ({
               <div role="cell" className="basis-1/3 flex flex-col items-start md:items-center">
                 <div className="font-semibold">Migrated tokens</div>
                 <div className="flex gap-1 items-center">
-                  <EthValueFormatter valueWei={migrationRow.totalAmount} />
+                  <EthValueFormatter valueWei={migrationRow.totalAmount} precision={4} />
                   <Image src="/icons/bsc.png" className="w-4 h-4" width={16} height={16} alt="Bsc logo" />
                   KYOTO
                 </div>
@@ -37,12 +37,17 @@ export const MigrationsTable = ({
                 <div className="font-semibold">Locked</div>
                 <EthValueFormatter
                   valueWei={migrationRow.totalAmount - migrationRow.alreadyReleased}
+                  precision={4}
                   currency="KYOTO"
                 />
               </div>
               <div role="cell" className="basis-1/3 flex flex-col items-start md:items-center">
                 <div className="font-semibold">Claimable</div>
-                <EthValueFormatter valueWei={getReleasableAmount(migrationRow.vestingId, index)} currency="KYOTO" />
+                <EthValueFormatter
+                  valueWei={getReleasableAmount(migrationRow.vestingId, index)}
+                  precision={4}
+                  currency="KYOTO"
+                />
               </div>
               <div role="cell" className="basis-1/3 flex flex-col items-start md:items-center">
                 <div className="font-semibold">Unlocked</div>
@@ -52,23 +57,26 @@ export const MigrationsTable = ({
                       ? getReleasableAmount(migrationRow.vestingId, index)! + migrationRow.alreadyReleased
                       : null
                   }
+                  precision={4}
                   currency="KYOTO"
                 />
               </div>
             </div>
             <div className="flex justify-center items-center gap-6">
-              <div className="lg:min-w-[9rem]">
-                {!!getReleasableAmount(migrationRow.vestingId, index) && (
-                  <Button variant="primary" onClick={() => onClaimClick(migrationRow.vestingId)}>
-                    Claim
-                  </Button>
-                )}
-              </div>
-              <div className="lg:min-w-[9rem]">
-                <Button variant="primary" onClick={() => onStakeClick(migrationRow.vestingId)}>
-                  Stake
-                </Button>
-              </div>
+              {!!getReleasableAmount(migrationRow.vestingId, index) && (
+                <>
+                  <div className="lg:min-w-[9rem]">
+                    <Button variant="primary" onClick={() => onClaimClick(migrationRow.vestingId)}>
+                      Claim
+                    </Button>
+                  </div>
+                  <div className="lg:min-w-[9rem]">
+                    <Button variant="primary" onClick={() => onStakeClick(migrationRow.vestingId)}>
+                      Stake
+                    </Button>
+                  </div>
+                </>
+              )}
             </div>
           </div>
         </div>

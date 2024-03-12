@@ -11,6 +11,7 @@ import { getDisplayedError } from '@/utils/formik/getDisplayedError'
 interface KyotoAddTokenParametersFormProps {
   balance: bigint
   poolAvailability: bigint
+  minAmountEth: number
   onClose(): void
   onSubmit(amountEth: number): void
 }
@@ -18,14 +19,17 @@ interface KyotoAddTokenParametersFormProps {
 export const KyotoAddTokenParametersForm = ({
   balance,
   poolAvailability,
+  minAmountEth,
   onClose,
   onSubmit,
 }: KyotoAddTokenParametersFormProps) => {
+  const balanceEth = Number(formatEther(balance))
+  const poolAvailabilityEth = Number(formatEther(poolAvailability))
   const validationSchema = Yup.object({
     amountEth: Yup.number()
-      .min(1)
-      .max(Number(formatEther(balance)), 'Usufficient funds')
-      .max(Number(formatEther(poolAvailability)), 'Amount not available'),
+      .required()
+      .min(minAmountEth)
+      .max(Math.min(balanceEth, poolAvailabilityEth), 'Amount not available'),
   })
 
   const handleSubmit = (values: { amountEth: string }) => {
@@ -37,7 +41,7 @@ export const KyotoAddTokenParametersForm = ({
       <div className="w-full max-w-[25rem] p-4 pb-8 flex flex-col gap-8 justify-center uppercase text-center">
         <Formik
           initialValues={{
-            amountEth: '1',
+            amountEth: String(Math.min(balanceEth, 1)),
           }}
           validationSchema={validationSchema}
           onSubmit={handleSubmit}
@@ -66,7 +70,7 @@ export const KyotoAddTokenParametersForm = ({
                       id="amountEth"
                       type="number"
                       aria-label="Amount"
-                      min={1}
+                      min={minAmountEth}
                       step="any"
                       value={values.amountEth}
                       error={getDisplayedError({ errors, touched }, 'amountEth')}

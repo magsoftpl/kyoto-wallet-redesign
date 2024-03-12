@@ -8,16 +8,14 @@ import { useVestingContract } from './dataSources/vestingContract'
 import { useTransactionStarter } from '../web3/useTransactionStarter'
 import { Panel } from '@/components/complex-controls/Panel'
 import { useStakingLogic } from './logic/useStakingLogic'
-import { useCurrentUserBalance } from '../userFinances/useCurrentUserBalance'
 import { useStakingContract } from './dataSources/stakingContract'
 
 export const MigrationStaking = () => {
   const { showStakeVestingPopup } = useStakingLogic()
-  const { data: walletBalance } = useCurrentUserBalance()
   const { address, isConnectedToProperWallet } = useCurrentWalletInfo()
   const { balance: balanceToMigrate, migrate } = useBscMigrationSourceContract({ owner: address! })
   const { data: vestingData, refetch: refetchVestingData } = useVestingData({ address })
-  const { vestingInfo, releasableInfo, release, refetchVestingInfo } = useVestingContract({
+  const { vestingInfo, releasableInfo, release } = useVestingContract({
     scheduleIds: vestingData.map((vs) => vs.vestingId),
   })
   const { poolCapacity } = useStakingContract({ owner: address })
@@ -32,16 +30,29 @@ export const MigrationStaking = () => {
   }
 
   const handleReleaseVesting = async (vestingId: bigint) => {
-    startTransaction('kyoto', () => release(vestingId))
+    const toRelease = releasableInfo?.find((ri) => ri.vestingId === vestingId)
+    if (!toRelease) {
+      return
+    }
+    startTransaction('kyoto', () => release(vestingId, toRelease.amount))
   }
 
   const handleStakeVesting = async (vestingId: bigint) => {
-    showStakeVestingPopup({ poolAvailability: poolCapacity!, walletBalance: walletBalance!, vestingId })
+    const toRelease = releasableInfo?.find((ri) => ri.vestingId === vestingId)
+    if (!toRelease) {
+      return
+    }
+    showStakeVestingPopup({ poolAvailability: poolCapacity!, walletBalance: toRelease.amount, vestingId })
   }
 
   return (
     <Panel variant="primary" collapsible title="Migration">
-      <TransactionProgressModal txHash={txHash} chain={chain} transactionInitStatus={transactionInitStatus} />
+      <TransactionProgressModal
+        txHash={txHash}
+        chain={chain}
+        transactionInitStatus={transactionInitStatus}
+        onClose={refetchVestingData}
+      />
       <div className="w-full flex flex-col gap-2">
         {vestingInfo && releasableInfo && (
           <MigrationsTable

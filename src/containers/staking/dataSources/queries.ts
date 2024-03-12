@@ -1,9 +1,9 @@
 import { gql } from '@apollo/client'
 
-export const vestingData = (addy: string) => gql`
+export const vestingData = (address: string) => gql`
   {
     vestingScheduleCreateds(
-      where: { beneficiary: "${addy}" }
+      where: { beneficiary: "${address}" }
       orderBy: blockNumber
       orderDirection: desc
     ) {

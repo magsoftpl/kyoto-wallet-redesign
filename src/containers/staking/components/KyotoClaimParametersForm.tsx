@@ -14,6 +14,7 @@ interface KyotoClaimParametersFormProps {
 }
 
 export const KyotoClaimParametersForm = ({ rewardsAvailable, onClose, onSubmit }: KyotoClaimParametersFormProps) => {
+  const rewardsAvailableEth = Number(formatEther(rewardsAvailable))
   const validationSchema = Yup.object({
     amountEth: Yup.number()
       .min(0)
@@ -25,11 +26,11 @@ export const KyotoClaimParametersForm = ({ rewardsAvailable, onClose, onSubmit }
   }
 
   return (
-    <Modal title="Stake Kyoto" theme="dark" show hasCloseButton onClose={onClose}>
+    <Modal title="Claim" theme="dark" show hasCloseButton onClose={onClose}>
       <div className="w-full max-w-[25rem] p-4 pb-8 flex flex-col gap-8 justify-center uppercase text-center">
         <Formik
           initialValues={{
-            amountEth: '1',
+            amountEth: String(Math.min(1, rewardsAvailableEth)),
           }}
           validationSchema={validationSchema}
           onSubmit={handleSubmit}
@@ -55,16 +56,16 @@ export const KyotoClaimParametersForm = ({ rewardsAvailable, onClose, onSubmit }
                         step="any"
                         value={values.amountEth}
                         error={getDisplayedError({ errors, touched }, 'amountEth')}
-                        // icon={
-                        //   <Button
-                        //     variant="transparent"
-                        //     layout="icon-only"
-                        //     type="button"
-                        //     onClick={() => setFieldValue('amountEth', formatEther(rewardsAvailable))}
-                        //   >
-                        //     MAX
-                        //   </Button>
-                        // }
+                        icon={
+                          <Button
+                            variant="transparent"
+                            layout="icon-only"
+                            type="button"
+                            onClick={() => setFieldValue('amountEth', formatEther(rewardsAvailable))}
+                          >
+                            MAX
+                          </Button>
+                        }
                         onChange={handleChange}
                       />
                     </div>

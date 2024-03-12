@@ -260,6 +260,11 @@ export const vestingContractAbi = [
         type: 'uint256',
         internalType: 'uint256',
       },
+      {
+        name: 'amount',
+        type: 'uint256',
+        internalType: 'uint256',
+      },
     ],
     outputs: [],
     stateMutability: 'nonpayable',
@@ -295,6 +300,29 @@ export const vestingContractAbi = [
         name: 'account',
         type: 'address',
         internalType: 'address',
+      },
+    ],
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    name: 'stake',
+    inputs: [
+      {
+        name: 'vestingScheduleId',
+        type: 'uint256',
+        internalType: 'uint256',
+      },
+      {
+        name: 'amount',
+        type: 'uint256',
+        internalType: 'uint256',
+      },
+      {
+        name: 'stakingPool',
+        type: 'address',
+        internalType: 'contract StakingPool',
       },
     ],
     outputs: [],
@@ -550,6 +578,11 @@ export const vestingContractAbi = [
   {
     type: 'error',
     name: 'ExpectedPause',
+    inputs: [],
+  },
+  {
+    type: 'error',
+    name: 'InvalidAmount',
     inputs: [],
   },
   {

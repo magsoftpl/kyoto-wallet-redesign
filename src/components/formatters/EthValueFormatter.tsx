@@ -2,13 +2,17 @@ import { formatEther } from 'viem'
 
 interface FormatEthOptions {
   currency?: string
+  precision?: number
 }
 
 export const formatEthValue = (valueWei: bigint | null | undefined, options?: FormatEthOptions) => {
   if (valueWei === null || valueWei === undefined) {
     return null
   }
-  const valueEth = formatEther(valueWei, 'wei')
+  let valueEth = Number(formatEther(valueWei, 'wei'))
+  if (options?.precision !== undefined) {
+    valueEth = applyRounding(valueEth, options.precision)
+  }
   const result = options?.currency ? `${valueEth} ${options?.currency}` : valueEth
   return result
 }
@@ -19,4 +23,9 @@ interface EthValueFormatterProps extends FormatEthOptions {
 
 export const EthValueFormatter = ({ valueWei, ...options }: EthValueFormatterProps) => {
   return formatEthValue(valueWei, options)
+}
+
+const applyRounding = (value: number, precision: number) => {
+  const multiplier = 10 ** precision
+  return Math.ceil(value * multiplier) / multiplier
 }

@@ -4,12 +4,13 @@ import { UserInfoHeader } from '@/containers/userInfoHeader/UserInfoHeader'
 import { AuthorizedLayout } from '@/layouts/authorized/AuthorizedLayout'
 import { AuthGuard } from '@/containers/authentication/authGuard'
 import { ErrorToasts } from '@/containers/errorHandling/ErrorToasts'
+import { Dashboard } from '@/containers/dashboard/Dashboard'
 
 const DashboardPage = () => {
   return (
     <AuthGuard redirectTarget="/login" sessionRestriction="required">
       <AuthorizedLayout header={<UserInfoHeader />} toolbar={<NavigationToolbar />} footer={<Footer />}>
-        <div className="h-screen">Dashboard</div>
+        <Dashboard />
         <ErrorToasts />
       </AuthorizedLayout>
     </AuthGuard>

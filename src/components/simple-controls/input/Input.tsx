@@ -11,13 +11,15 @@ interface InputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, '
 export const Input: React.FC<InputProps> = ({ label, icon, error, ...props }) => {
   const labelClassName = classNames('block', 'mb-1.5', 'text-sm', 'font-medium', 'leading-6')
 
-  const inputClassName = classNames(
+  const wrapperClassName = classNames(
     'block',
     'w-full',
+    'flex',
+    'justify-between',
+    'items-center',
+    'overflow-hidden',
     'h-11',
     'rounded-md',
-    'py-2',
-    'px-3.5',
     'text-black',
     'placeholder:text-secondary-950',
     'bg-white',
@@ -28,12 +30,24 @@ export const Input: React.FC<InputProps> = ({ label, icon, error, ...props }) =>
     'sm:text-sm sm:leading-6',
   )
 
+  const inputClassName = classNames(
+    'block',
+    'w-full',
+    'h-full',
+    'py-2',
+    !!icon ? 'pl-3.5' : 'px-3.5',
+    'text-black',
+    'placeholder:text-secondary-950',
+    'outline-none',
+    'sm:text-sm sm:leading-6',
+  )
+
   return (
     <div className="">
       {label && <label className={labelClassName}>{label}</label>}
-      <div className="relative">
+      <div className={wrapperClassName}>
         <input className={inputClassName} {...props} />
-        {!!icon && <div className="absolute right-2 top-1/2 -translate-y-1/2 text-black">{icon}</div>}
+        {!!icon && <div className="text-black">{icon}</div>}
       </div>
       <div className="min-h-[1.6em] px-1 text-error-500 text-xs">{error}</div>
     </div>

@@ -82,11 +82,11 @@ export const useVestingContract = ({ scheduleIds }: { scheduleIds: bigint[] }) =
   )
 
   const release = useCallback(
-    async (vestingId: bigint) => {
+    async (vestingId: bigint, amount: bigint) => {
       const result = await writeContractAsync({
         abi: vestingContractAbi,
         functionName: 'release',
-        args: [vestingId],
+        args: [vestingId, amount],
         chainId: kyoto.chainId,
         address,
       })
@@ -95,19 +95,19 @@ export const useVestingContract = ({ scheduleIds }: { scheduleIds: bigint[] }) =
     [address, kyoto.chainId, writeContractAsync],
   )
 
-  // const stake = useCallback(
-  //   async (vestingId: bigint, amount: bigint) => {
-  //     const result = await writeContractAsync({
-  //       abi: vestingContractAbi,
-  //       functionName: 'stake',
-  //       args: [vestingId, amount, stakingPoolAddress],
-  //       chainId: kyoto.chainId,
-  //       address,
-  //     })
-  //     return result
-  //   },
-  //   [address, kyoto.chainId, stakingPoolAddress, writeContractAsync],
-  // )
+  const stake = useCallback(
+    async (vestingId: bigint, amount: bigint) => {
+      const result = await writeContractAsync({
+        abi: vestingContractAbi,
+        functionName: 'stake',
+        args: [vestingId, amount, stakingPoolAddress],
+        chainId: kyoto.chainId,
+        address,
+      })
+      return result
+    },
+    [address, kyoto.chainId, stakingPoolAddress, writeContractAsync],
+  )
 
   const result = useMemo(
     () => ({
@@ -116,10 +116,10 @@ export const useVestingContract = ({ scheduleIds }: { scheduleIds: bigint[] }) =
       releasableInfo,
       isReleasableInfoError,
       release,
-      // stake,
+      stake,
       refetchVestingInfo,
     }),
-    [isReleasableInfoError, isVestingInfoError, refetchVestingInfo, releasableInfo, release, vestingInfo],
+    [isReleasableInfoError, isVestingInfoError, refetchVestingInfo, releasableInfo, release, stake, vestingInfo],
   )
   return result
 }

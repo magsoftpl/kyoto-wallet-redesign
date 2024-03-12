@@ -6,6 +6,7 @@ import { Address } from 'viem'
 import { useReadContract, useReadContracts, useWriteContract } from 'wagmi'
 
 export interface TokenStakingInfo {
+  stakeId: number
   stakedAmount: bigint
   startTimestamp: bigint
   claimedRewards: bigint
@@ -21,16 +22,19 @@ export const useStakingContract = ({ owner, readEnabled = true }: { owner: Addre
   const address = getEnvConfigValue('KYOTO_STAKING_ADDRESS') as Address
   const { writeContractAsync } = useWriteContract()
 
-  const { data: allStakeCount } = useReadContract({
+  const { data: allStakeCount, refetch } = useReadContract({
     abi: stakingContractAbi,
     functionName: 'stakeCountByStaker',
     args: [owner],
     chainId: kyoto.chainId,
     address,
+    scopeKey: `stakeCountByStaker-${owner}`,
     query: {
       enabled: readEnabled && !!owner,
+      staleTime: 0,
     },
   })
+
   const stakeIds = useMemo(() => Array.from(Array(Number(allStakeCount || 0)).keys()), [allStakeCount])
 
   const { data: poolCapacity } = useReadContract({
@@ -54,8 +58,28 @@ export const useStakingContract = ({ owner, readEnabled = true }: { owner: Addre
     })),
   })
 
+  const stakes = useMemo(() => {
+    if (!allStakes) {
+      return []
+    }
+    return allStakes
+      .map((stakeResponse, index) => {
+        const stakeResult = stakeResponse.result as unknown as [bigint, bigint, bigint, bigint]
+        if (!stakeResult || !stakeResult[0]) {
+          return null
+        }
+        return {
+          stakeId: index,
+          stakedAmount: stakeResult[0],
+          startTimestamp: stakeResult[1],
+          claimedRewards: stakeResult[2],
+        }
+      })
+      .filter((stake) => !!stake) as TokenStakingInfo[]
+  }, [allStakes])
+
   const { data: allRewards } = useReadContracts({
-    contracts: stakeIds.map((stakeId) => ({
+    contracts: stakes.map(({ stakeId }) => ({
       abi: stakingContractAbi,
       functionName: 'rewards',
       args: [owner, stakeId],
@@ -64,23 +88,15 @@ export const useStakingContract = ({ owner, readEnabled = true }: { owner: Addre
     })),
   })
 
-  const [stakes, rewards] = useMemo(() => {
-    if (!allStakes || !allRewards) {
+  const rewards = useMemo(() => {
+    if (!allRewards || !stakes) {
       return []
     }
-    const wrkStakes: TokenStakingInfo[] = []
-    const wrkRewards: TokenStakingRewardsInfo[] = []
-    for (let stakeId = 0; stakeId < allStakes.length; stakeId++) {
-      const stakeResponse = allStakes[stakeId]
-      const stakeResult = stakeResponse.result as unknown as [bigint, bigint, bigint, bigint]
-      if (!stakeResult || !stakeResult[0]) {
-        continue
-      }
-      wrkStakes.push({ stakedAmount: stakeResult[0], startTimestamp: stakeResult[1], claimedRewards: stakeResult[2] })
-      wrkRewards.push({ stakeId, amount: allRewards[stakeId].result as unknown as bigint })
-    }
-    return [wrkStakes, wrkRewards]
-  }, [allStakes, allRewards])
+    return allRewards.map((reward, index) => ({
+      stakeId: stakes[index].stakeId,
+      amount: reward.result as unknown as bigint,
+    }))
+  }, [allRewards, stakes])
 
   const stake = useCallback(
     async (amount: bigint) => {
@@ -111,6 +127,20 @@ export const useStakingContract = ({ owner, readEnabled = true }: { owner: Addre
     [address, kyoto.chainId, writeContractAsync],
   )
 
+  const unstake = useCallback(
+    async (stakeId: bigint) => {
+      const result = await writeContractAsync({
+        abi: stakingContractAbi,
+        functionName: 'unstake',
+        args: [stakeId],
+        chainId: kyoto.chainId,
+        address,
+      })
+      return result
+    },
+    [address, kyoto.chainId, writeContractAsync],
+  )
+
   return {
     stakeCount: stakes?.length,
     poolCapacity,
@@ -118,5 +148,7 @@ export const useStakingContract = ({ owner, readEnabled = true }: { owner: Addre
     stakes,
     stake,
     claimRewards,
+    unstake,
+    refetch,
   }
 }

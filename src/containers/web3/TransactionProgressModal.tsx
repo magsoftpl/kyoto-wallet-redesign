@@ -14,9 +14,15 @@ interface TransactionProgressModalProps {
   txHash: Address | undefined
   chain: keyof ReturnType<typeof useNetworkConfig> | undefined
   transactionInitStatus: TransactionInitStatus
+  onClose?(): void
 }
 
-export const TransactionProgressModal = ({ txHash, chain, transactionInitStatus }: TransactionProgressModalProps) => {
+export const TransactionProgressModal = ({
+  txHash,
+  chain,
+  transactionInitStatus,
+  onClose,
+}: TransactionProgressModalProps) => {
   const [isVisible, setIsVisible] = useState(false)
   const info = useTransactionReceipt({
     query: {
@@ -33,6 +39,7 @@ export const TransactionProgressModal = ({ txHash, chain, transactionInitStatus 
 
   const handleClose = () => {
     setIsVisible(false)
+    onClose?.()
   }
 
   const isPending = !info.isSuccess && !info.isError && transactionInitStatus !== 'error'

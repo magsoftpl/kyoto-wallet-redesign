@@ -1,20 +1,18 @@
-import { useCurrentWalletInfo } from '../web3/useCurrentWalletInfo'
 import { useTransactionStarter } from '../web3/useTransactionStarter'
-import { useStakingContract } from './dataSources/stakingContract'
 import useStakingState from './dataSources/staking.slice'
 import { KyotoAddTokenParametersForm } from './components/KyotoAddTokenParametersForm'
 import { useStakingLogic } from './logic/useStakingLogic'
 import { KyotoAddTokenPreview } from './components/KyotoAddTokenPreview'
-import { parseEther } from 'viem'
+import { formatEther, parseEther } from 'viem'
 import { TransactionProgressModal } from '../web3/TransactionProgressModal'
+import { useVestingContract } from './dataSources/vestingContract'
 
 export const KyotoMigrationStakingModals = () => {
-  const { address } = useCurrentWalletInfo()
   const { stakeMigrationPopup } = useStakingState()
   const { closeStakeVestingPopup, submitStakeVestingEthAmount } = useStakingLogic()
 
   const { startTransaction, chain, txHash, transactionInitStatus } = useTransactionStarter()
-  const {} = useStakingContract({ owner: address, readEnabled: false })
+  const { stake } = useVestingContract({ scheduleIds: [] })
 
   const handleStakeKyoto = async () => {
     if (!stakeMigrationPopup) {
@@ -22,7 +20,7 @@ export const KyotoMigrationStakingModals = () => {
     }
     const amount = parseEther(String(stakeMigrationPopup.stakedAmountEth))
     closeStakeVestingPopup()
-    // startTransaction('kyoto', () => stake(amount))
+    startTransaction('kyoto', () => stake(stakeMigrationPopup.vestingId, amount))
   }
 
   return (
@@ -32,6 +30,7 @@ export const KyotoMigrationStakingModals = () => {
         <KyotoAddTokenParametersForm
           balance={stakeMigrationPopup.walletBalance}
           poolAvailability={stakeMigrationPopup.poolAvailability}
+          minAmountEth={Number(formatEther(BigInt(1), 'wei'))}
           onClose={closeStakeVestingPopup}
           onSubmit={submitStakeVestingEthAmount}
         />

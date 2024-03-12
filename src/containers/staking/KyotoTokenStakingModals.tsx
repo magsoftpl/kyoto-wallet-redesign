@@ -15,7 +15,7 @@ export const KyotoTokenStakingModals = () => {
   const { closeAddTokenStakePopup, submitAddTokensStakeEthAmount, closeClaimStakePopup } = useStakingLogic()
 
   const { startTransaction, chain, txHash, transactionInitStatus } = useTransactionStarter()
-  const { stake, claimRewards } = useStakingContract({ owner: address, readEnabled: false })
+  const { stake, claimRewards, refetch } = useStakingContract({ owner: address, readEnabled: false })
 
   const handleStakeKyoto = async () => {
     if (!addStakePopup) {
@@ -30,7 +30,7 @@ export const KyotoTokenStakingModals = () => {
     if (!claimStakePopup) {
       return
     }
-    const stakeId = parseEther(String(claimStakePopup.stakeId))
+    const stakeId = BigInt(claimStakePopup.stakeId)
     const amount = parseEther(String(amountEth))
     closeClaimStakePopup()
     startTransaction('kyoto', () => claimRewards(stakeId, amount))
@@ -38,11 +38,17 @@ export const KyotoTokenStakingModals = () => {
 
   return (
     <>
-      <TransactionProgressModal chain={chain} txHash={txHash} transactionInitStatus={transactionInitStatus} />
+      <TransactionProgressModal
+        chain={chain}
+        txHash={txHash}
+        transactionInitStatus={transactionInitStatus}
+        onClose={refetch}
+      />
       {addStakePopup?.step === 'select-amount' && (
         <KyotoAddTokenParametersForm
           balance={addStakePopup.walletBalance}
           poolAvailability={addStakePopup.poolAvailability}
+          minAmountEth={1}
           onClose={closeAddTokenStakePopup}
           onSubmit={submitAddTokensStakeEthAmount}
         />
