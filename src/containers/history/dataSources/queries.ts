@@ -16,6 +16,11 @@ export const history = (address: string) => gql`{
       blockTimestamp
       transactionHash
     }
+    vestingScheduleCreateds( where: { beneficiary: "${address}" } orderBy: blockNumber orderDirection: desc ) {
+      amountToVest
+      blockTimestamp
+      transactionHash
+    }
     kyotoVestingReleaseds( where: { beneficiary: "${address}" } orderBy: blockTimestamp orderDirection: desc ) {
       releasedAmount
       transactionHash

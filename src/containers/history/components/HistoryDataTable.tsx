@@ -31,6 +31,11 @@ export const actionStyler = (credentialsData: HistoryItem) => {
       actionDetails = formatStake({ lockSuffix: true })
       break
     }
+    case 'migration-create': {
+      actionText = 'Migration'
+      actionDetails = 'Receive'
+      break
+    }
     case 'release': {
       actionText = 'Claimed rewards'
       actionDetails = 'Migration'
